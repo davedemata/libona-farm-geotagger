@@ -10,8 +10,14 @@ app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const DATA_FILE = path.join(__dirname, 'data', 'farms.json');
-const CONFIG_FILE = path.join(__dirname, 'data', 'app_config.json');
+const DATA_DIR = path.join(__dirname, 'data');
+const DATA_FILE = path.join(DATA_DIR, 'farms.json');
+const CONFIG_FILE = path.join(DATA_DIR, 'app_config.json');
+
+// Ensure data folder exists
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
 
 // Default App Config
 const DEFAULT_CONFIG = {
@@ -35,10 +41,18 @@ const DEFAULT_CONFIG = {
 
 // Ensure data files exist
 if (!fs.existsSync(DATA_FILE)) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify([]), 'utf8');
+  try {
+    fs.writeFileSync(DATA_FILE, JSON.stringify([]), 'utf8');
+  } catch (err) {
+    console.error('Warning creating data file:', err);
+  }
 }
 if (!fs.existsSync(CONFIG_FILE)) {
-  fs.writeFileSync(CONFIG_FILE, JSON.stringify(DEFAULT_CONFIG, null, 2), 'utf8');
+  try {
+    fs.writeFileSync(CONFIG_FILE, JSON.stringify(DEFAULT_CONFIG, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Warning creating config file:', err);
+  }
 }
 
 // Helpers
