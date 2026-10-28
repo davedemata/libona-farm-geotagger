@@ -9,7 +9,14 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static(__dirname));
+app.get('/', (req, res) => {
+  const indexPath = path.join(__dirname, 'public', 'index.html');
+  const altPath = path.join(__dirname, 'index.html');
+  if (fs.existsSync(indexPath)) return res.sendFile(indexPath);
+  if (fs.existsSync(altPath)) return res.sendFile(altPath);
+  res.send(`<h2>🌾 LGU Libona Geotagger Server is Online!</h2><p>Palihug i-upload ang index.html o public folder.</p>`);
+});
 const DATA_DIR = path.join(__dirname, 'data');
 const DATA_FILE = path.join(DATA_DIR, 'farms.json');
 const CONFIG_FILE = path.join(DATA_DIR, 'app_config.json');
