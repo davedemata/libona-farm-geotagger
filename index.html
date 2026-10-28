@@ -133,9 +133,88 @@
       body { height: auto; overflow: visible; background: white; }
       header { background: white; color: black; border-bottom: 2px solid #2E7D32; }
       .sidebar, .map-container { display: block; width: 100%; height: auto; }
-      .pills-scroll, .btn-print, .live-indicator { display: none !important; }
+      .pills-scroll, .btn-print, .live-indicator, .settings-modal, .btn-settings { display: none !important; }
       #map { height: 400px; margin-top: 15px; }
     }
+
+    /* Settings Gear & Modal */
+    .btn-settings {
+      background: rgba(255,255,255,0.2);
+      color: #FFF;
+      border: 1px solid rgba(255,255,255,0.35);
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-settings:hover { background: rgba(255,255,255,0.3); }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.5);
+      z-index: 2000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-card {
+      background: #FFF;
+      border-radius: 14px;
+      width: 380px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      overflow: hidden;
+    }
+    .modal-header {
+      background: var(--primary);
+      color: #FFF;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h2 { font-size: 16px; font-weight: bold; }
+    .btn-close-modal {
+      background: none; border: none; color: #FFF; font-size: 18px; cursor: pointer; font-weight: bold;
+    }
+    .modal-body {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .setting-toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #EEE;
+    }
+    .setting-info h4 { font-size: 14px; color: #333; margin-bottom: 2px; }
+    .setting-info p { font-size: 11px; color: #777; }
+
+    /* Switch styling */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 24px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #CCC; transition: .3s; border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+      background-color: white; transition: .3s; border-radius: 50%;
+    }
+    input:checked + .slider { background-color: #2E7D32; }
+    input:checked + .slider:before { transform: translateX(22px); }
   </style>
 </head>
 <body>
@@ -150,8 +229,9 @@
         <span class="dot"></span>
         <span>LIVE FIELD INTAKE</span>
       </div>
-      <button class="btn-print" onclick="window.print()">🖨️ Print Summary</button>
-      <a href="/admin.html" style="color: #FFF; text-decoration: none; font-size: 13px; font-weight: bold; background: rgba(0,0,0,0.25); padding: 7px 12px; border-radius: 8px;">🛠️ Admin Console</a>
+      <button class="btn-print" onclick="window.print()">🖨️ Print</button>
+      <button class="btn-settings" onclick="openSettings()">⚙️ Settings</button>
+      <a href="/admin.html" style="color: #FFF; text-decoration: none; font-size: 13px; font-weight: bold; background: rgba(0,0,0,0.25); padding: 7px 12px; border-radius: 8px;">🛠️ Admin</a>
     </div>
   </header>
 
@@ -163,6 +243,14 @@
         <h3>Filter Barangay:</h3>
         <div class="pills-scroll" id="brgyPills">
           <button class="pill active" onclick="setBrgy('ALL')">All Barangays</button>
+        </div>
+      </div>
+
+      <!-- Filter Crop / Commodity -->
+      <div class="filter-sec">
+        <h3>Filter Crops & Commodities:</h3>
+        <div class="pills-scroll" id="cropPills">
+          <button class="pill active" onclick="setCrop('ALL')">All Crops</button>
         </div>
       </div>
 
@@ -217,24 +305,97 @@
       "San Jose", "Santa Fe", "Sil-ipon"
     ];
 
+    // Official Coordinates & Approximated Spatial Radius for Libona Barangays
+    const BARANGAY_GEO_DATA = {
+      Capihan:      { lat: 8.2493, lng: 124.7748, radius: 2400 },
+      Crossing:     { lat: 8.3231, lng: 124.7915, radius: 2100 },
+      Gango:        { lat: 8.3887, lng: 124.6655, radius: 2600 },
+      Kiliog:       { lat: 8.3390, lng: 124.7024, radius: 2700 },
+      Kinawe:       { lat: 8.3686, lng: 124.6846, radius: 2300 },
+      Laturan:      { lat: 8.3067, lng: 124.7686, radius: 2500 },
+      Maambong:     { lat: 8.2633, lng: 124.8166, radius: 2800 },
+      Nangka:       { lat: 8.3000, lng: 124.7367, radius: 2200 },
+      Palabucan:    { lat: 8.3985, lng: 124.7802, radius: 2500 },
+      Poblacion:    { lat: 8.3349, lng: 124.7469, radius: 1800 },
+      Pongol:       { lat: 8.2791, lng: 124.7481, radius: 2300 },
+      'San Jose':   { lat: 8.2967, lng: 124.8007, radius: 2600 },
+      'Santa Fe':   { lat: 8.3444, lng: 124.7794, radius: 2200 },
+      'Sil-ipon':   { lat: 8.2261, lng: 124.8223, radius: 3200 }
+    };
+
     const CROP_METADATA = {
-      Corn:         { label: 'Corn (Mais)',           fill: '#A5D6A7', stroke: '#2E7D32' },
-      Cassava:      { label: 'Cassava (Balanghoy)',   fill: '#D7CCC8', stroke: '#6D4C41' },
-      Rice:         { label: 'Rice (Humay)',           fill: '#FFF59D', stroke: '#FBC02D' },
-      Vegetables:   { label: 'Vegetables (Utanon)',   fill: '#80CBC4', stroke: '#00695C' },
-      'Fruit Trees':{ label: 'Fruit Trees (Prutas)',  fill: '#FFCC80', stroke: '#EF6C00' },
-      Others:       { label: 'Others',                fill: '#E1BEE7', stroke: '#7B1FA2' }
+      Rice:               { label: 'Rice (Humay)',           fill: '#FFF59D', stroke: '#FBC02D' },
+      Corn:               { label: 'Corn (Mais)',            fill: '#A5D6A7', stroke: '#2E7D32' },
+      Cassava:            { label: 'Cassava (Balanghoy)',    fill: '#D7CCC8', stroke: '#6D4C41' },
+      Coffee:             { label: 'Coffee (Kape)',          fill: '#BCAAA4', stroke: '#4E342E' },
+      Coconut:            { label: 'Coconut (Lubi)',         fill: '#C5E1A5', stroke: '#558B2F' },
+      'High Value Crops': { label: 'High Value Crops (HVC)', fill: '#80CBC4', stroke: '#00695C' },
+      'Fish Pond':        { label: 'Fish Pond',              fill: '#81D4FA', stroke: '#0277BD' },
+      MPDP:               { label: 'MPDP',                   fill: '#FFE082', stroke: '#FF8F00' },
+      Others:             { label: 'Others',                 fill: '#E1BEE7', stroke: '#7B1FA2' }
     };
 
     let selectedBrgy = 'ALL';
+    let selectedCrop = 'ALL';
     let allFarms = [];
     let map, polygonLayers = [];
+    let brgyBoundaryLayer = null;
+    let allBrgyPolygonsLayer = null;
+    let brgyGeojsonData = null;
 
-    // Initialize Map
-    map = L.map('map').setView([8.2719, 124.7479], 13);
+    // Initialize Map centered on Libona, Bukidnon
+    map = L.map('map').setView([8.3333, 124.7433], 12);
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       maxZoom: 19, attribution: 'Esri Satellite Tiles'
     }).addTo(map);
+
+    // Add Reference Label overlay
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 19
+    }).addTo(map);
+
+    // Official Libona Municipal Outer Boundary Outline
+    fetch('/libona_full_boundary.geojson')
+      .then(r => r.json())
+      .then(geo => {
+        L.geoJSON(geo, {
+          style: {
+            color: '#FFFFFF',
+            weight: 3.5,
+            dashArray: '8, 6',
+            fillColor: 'transparent'
+          }
+        }).addTo(map);
+      })
+      .catch(e => console.log('Boundary load:', e));
+
+    // Load Polygon Boundaries for All 14 Barangays (NO PINS, TRUE POLYGON BOUNDARIES)
+    fetch('/libona_barangay_polygons.geojson')
+      .then(r => r.json())
+      .then(data => {
+        brgyGeojsonData = data;
+        allBrgyPolygonsLayer = L.geoJSON(data, {
+          style: function(feature) {
+            return {
+              color: '#FFEB3B',
+              weight: 2,
+              dashArray: '4, 4',
+              fillColor: feature.properties.color || '#4CAF50',
+              fillOpacity: 0.15
+            };
+          },
+          onEachFeature: function(feature, layer) {
+            const bName = feature.properties.name;
+            layer.bindTooltip(`<b>Brgy. ${bName}</b>`, {
+              permanent: false,
+              direction: 'center',
+              className: 'brgy-tooltip'
+            });
+            layer.on('click', () => setBrgy(bName));
+          }
+        }).addTo(map);
+      })
+      .catch(e => console.log('Polygon load:', e));
 
     // Populate Barangay Buttons
     const pillsContainer = document.getElementById('brgyPills');
@@ -247,12 +408,62 @@
       pillsContainer.appendChild(btn);
     });
 
+    // Populate Crop Filter Buttons
+    const cropPillsContainer = document.getElementById('cropPills');
+    Object.keys(CROP_METADATA).forEach(c => {
+      const meta = CROP_METADATA[c];
+      const btn = document.createElement('button');
+      btn.className = 'pill';
+      btn.innerHTML = `<span style="display:inline-block; width:9px; height:9px; background:${meta.fill}; border:1.5px solid ${meta.stroke}; border-radius:2px; margin-right:4px;"></span>${c}`;
+      btn.onclick = () => setCrop(c);
+      btn.id = 'crop-pill-' + c.replace(/\s+/g, '-');
+      cropPillsContainer.appendChild(btn);
+    });
+
     function setBrgy(b) {
       selectedBrgy = b;
-      document.querySelectorAll('.pill').forEach(el => el.classList.remove('active'));
-      if (b === 'ALL') pillsContainer.children[0].classList.add('active');
-      else {
+      document.querySelectorAll('#brgyPills .pill').forEach(el => el.classList.remove('active'));
+      
+      if (brgyBoundaryLayer) {
+        map.removeLayer(brgyBoundaryLayer);
+        brgyBoundaryLayer = null;
+      }
+
+      if (b === 'ALL') {
+        pillsContainer.children[0].classList.add('active');
+        map.setView([8.3333, 124.7433], 12);
+        if (allBrgyPolygonsLayer) allBrgyPolygonsLayer.setStyle({ fillOpacity: 0.15, weight: 2 });
+      } else {
         const target = document.getElementById('pill-' + b);
+        if (target) target.classList.add('active');
+
+        // Highlight selected Barangay Polygon Boundary
+        if (brgyGeojsonData) {
+          const feat = brgyGeojsonData.features.find(f => f.properties.name === b);
+          if (feat) {
+            brgyBoundaryLayer = L.geoJSON(feat, {
+              style: {
+                color: '#FFD600',
+                weight: 4,
+                fillColor: feat.properties.color || '#FFD600',
+                fillOpacity: 0.35
+              }
+            }).addTo(map);
+
+            const bounds = brgyBoundaryLayer.getBounds();
+            map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 });
+          }
+        }
+      }
+      render();
+    }
+
+    function setCrop(c) {
+      selectedCrop = c;
+      document.querySelectorAll('#cropPills .pill').forEach(el => el.classList.remove('active'));
+      if (c === 'ALL') cropPillsContainer.children[0].classList.add('active');
+      else {
+        const target = document.getElementById('crop-pill-' + c.replace(/\s+/g, '-'));
         if (target) target.classList.add('active');
       }
       render();
@@ -272,9 +483,11 @@
     }
 
     function render() {
-      const filtered = selectedBrgy === 'ALL'
-        ? allFarms
-        : allFarms.filter(f => (f.barangay || '').toLowerCase() === selectedBrgy.toLowerCase());
+      const filtered = allFarms.filter(f => {
+        const brgyMatch = selectedBrgy === 'ALL' || (f.barangay || '').toLowerCase() === selectedBrgy.toLowerCase();
+        const cropMatch = selectedCrop === 'ALL' || (f.cropType || 'Others') === selectedCrop;
+        return brgyMatch && cropMatch;
+      });
 
       // Update Top Stats
       const totalArea = filtered.reduce((acc, f) => acc + (f.area || 0), 0);
@@ -357,6 +570,61 @@
     // Auto Refresh every 5 seconds for Real-Time synchronization
     loadData();
     setInterval(loadData, 5000);
+
+    // ── Settings Modal Functions ──
+    function openSettings() {
+      document.getElementById('settingsModal').style.display = 'flex';
+    }
+    function closeSettings() {
+      document.getElementById('settingsModal').style.display = 'none';
+    }
+
+    function toggleMunicipalBorder(show) {
+      if (!libonaMunicipalLayer) return;
+      if (show) map.addLayer(libonaMunicipalLayer);
+      else map.removeLayer(libonaMunicipalLayer);
+    }
+
+    function toggleBarangayPolygons(show) {
+      if (!allBrgyPolygonsLayer) return;
+      if (show) map.addLayer(allBrgyPolygonsLayer);
+      else map.removeLayer(allBrgyPolygonsLayer);
+    }
   </script>
+
+  <!-- Settings Gear Modal -->
+  <div class="modal-overlay" id="settingsModal" onclick="if(event.target===this)closeSettings()">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>⚙️ Map & Boundary Settings</h2>
+        <button class="btn-close-modal" onclick="closeSettings()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Toggle 1: Barangay Polygon Boundaries -->
+        <div class="setting-toggle-row">
+          <div class="setting-info">
+            <h4>Barangay Boundaries (Polygons)</h4>
+            <p>Ipakita o itago ang colored polygon borders sa 14 ka barangay</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="toggleBrgyBoundaries" checked onchange="toggleBarangayPolygons(this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <!-- Toggle 2: Municipal Outer Boundary -->
+        <div class="setting-toggle-row">
+          <div class="setting-info">
+            <h4>Libona Municipal Border Line</h4>
+            <p>Ipakita o itago ang puti/berde nga outer border sa tibuok Libona</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="toggleMunicipalBorder" checked onchange="toggleMunicipalBorder(this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
