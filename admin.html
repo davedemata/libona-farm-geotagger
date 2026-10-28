@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🛠️ LGU Libona - Master Admin & Program Updater</title>
+  <style>
+    :root {
+      --primary: #0D47A1;
+      --primary-light: #1565C0;
+      --bg: #ECEFF1;
+      --card: #FFFFFF;
+      --text: #263238;
+      --danger: #C62828;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding: 20px; }
+
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 16px 24px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+    .header-title h1 { font-size: 22px; font-weight: 800; }
+    .header-title p { font-size: 13px; color: #BBDEFB; margin-top: 3px; }
+    .nav-btn {
+      background: white;
+      color: var(--primary);
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 13px;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 2px solid #E0E0E0;
+      padding-bottom: 8px;
+    }
+
+    .field-group { margin-bottom: 14px; }
+    .field-group label { display: block; font-size: 12px; font-weight: 600; color: #546E7A; margin-bottom: 4px; }
+    .field-group input, .field-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #CFD8DC;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .btn:hover { background: var(--primary-light); }
+    .btn-danger { background: var(--danger); }
+    .btn-danger:hover { background: #B71C1C; }
+
+    /* Master Records Table */
+    .table-container { max-height: 400px; overflow-y: auto; margin-top: 10px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: #ECEFF1; padding: 10px; text-align: left; position: sticky; top: 0; }
+    td { padding: 10px; border-bottom: 1px solid #ECEFF1; }
+
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-title">
+      <h1>🛠️ MASTER DEVELOPER & SYSTEM UPDATER</h1>
+      <p>Configure Field Android App Rules, Remote Updates & Database Overrides</p>
+    </div>
+    <div>
+      <a href="/" class="nav-btn">🏢 Switch to Office Screen</a>
+    </div>
+  </header>
+
+  <div class="grid-container">
+    <!-- Card 1: Remote App Version & Config -->
+    <div class="card">
+      <div class="card-title">📲 Android Remote Configuration & Barangay Locks</div>
+      <div class="field-group">
+        <label>System Version (Remote Deploy):</label>
+        <input type="text" id="sysVersion" value="2.1.0">
+      </div>
+      <div class="field-group">
+        <label>App Master Admin PIN (para sa Field Locking):</label>
+        <input type="password" id="adminPin" value="1234">
+      </div>
+      <div class="field-group">
+        <label>14 Supported Barangays (System Registered):</label>
+        <textarea id="brgyList" rows="4" style="width: 100%; padding: 8px; font-size: 12px; border: 1px solid #CFD8DC; border-radius: 6px;"></textarea>
+      </div>
+      <button class="btn" onclick="saveConfiguration()">💾 Push System Update</button>
+    </div>
+
+    <!-- Card 2: Database Backup & Maintenance -->
+    <div class="card">
+      <div class="card-title">💾 Database Maintenance & Export</div>
+      <p style="font-size: 13px; color: #546E7A; margin-bottom: 16px;">
+        Ang tanang datos gikan sa 14 ka Android phone luwas nga gitipigan sa central repository.
+      </p>
+      <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <button class="btn" onclick="exportData('json')">📥 Download Backup (JSON)</button>
+        <button class="btn" style="background: #2E7D32;" onclick="exportData('csv')">📊 Export Excel/CSV</button>
+      </div>
+      <div style="background: #E3F2FD; padding: 12px; border-radius: 8px; font-size: 12px; border: 1px solid #90CAF9;">
+        <b>💡 Developer Note:</b> Kada lihok sa Android Field app, kining server maoy nag-handle sa background queue ug nag-consolidate sa coordinates ug polygon acreage.
+      </div>
+    </div>
+  </div>
+
+  <!-- Master Farm Records Overrides Table -->
+  <div class="card" style="margin-top: 20px;">
+    <div class="card-title" style="justify-content: space-between;">
+      <span>📑 Master Farmers Data Overrides & Corrections</span>
+      <input type="text" id="searchBox" placeholder="Search farmer or barangay..." onkeyup="filterTable()" style="padding: 6px 12px; font-size: 12px; border-radius: 6px; border: 1px solid #CCC; width: 250px;">
+    </div>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Farmer Name</th>
+            <th>Barangay</th>
+            <th>Address</th>
+            <th>Crop Type</th>
+            <th>Area (ha)</th>
+            <th>Center Coordinates</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="masterTable">
+          <tr><td colspan="7" style="text-align: center; color: #888;">Loading master records...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    let farms = [];
+    let config = {};
+
+    async function loadConfig() {
+      try {
+        const res = await fetch('/api/config');
+        config = await res.json();
+        document.getElementById('sysVersion').value = config.currentVersion || '2.1.0';
+        document.getElementById('adminPin').value = config.adminPin || '1234';
+        document.getElementById('brgyList').value = (config.barangays || []).join(', ');
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function saveConfiguration() {
+      config.currentVersion = document.getElementById('sysVersion').value;
+      config.adminPin = document.getElementById('adminPin').value;
+      config.barangays = document.getElementById('brgyList').value.split(',').map(s => s.trim()).filter(Boolean);
+
+      try {
+        const res = await fetch('/api/config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(config)
+        });
+        const json = await res.json();
+        if (json.success) {
+          alert('Config updated successfully! 🚀');
+        }
+      } catch (e) {
+        alert('Failed to update config.');
+      }
+    }
+
+    async function loadFarms() {
+      try {
+        const res = await fetch('/api/farms');
+        const json = await res.json();
+        if (json.success) {
+          farms = json.data;
+          renderTable(farms);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function renderTable(list) {
+      const tbody = document.getElementById('masterTable');
+      if (list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #888;">No records found.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = list.map(f => `
+        <tr>
+          <td><b>${f.farmerName}</b></td>
+          <td>${f.barangay}</td>
+          <td>${f.address || '—'}</td>
+          <td><span class="tag" style="background:#E8F5E9; color:#2E7D32;">${f.cropType}</span></td>
+          <td>${((f.area||0)/10000).toFixed(2)}</td>
+          <td style="font-family: monospace; font-size: 11px;">${f.centerCoords ? f.centerCoords.latitude + ', ' + f.centerCoords.longitude : '—'}</td>
+          <td>
+            <button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px;" onclick="deleteFarm('${f.id}')">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function filterTable() {
+      const q = document.getElementById('searchBox').value.toLowerCase();
+      const filtered = farms.filter(f =>
+        (f.farmerName || '').toLowerCase().includes(q) ||
+        (f.barangay || '').toLowerCase().includes(q) ||
+        (f.cropType || '').toLowerCase().includes(q)
+      );
+      renderTable(filtered);
+    }
+
+    async function deleteFarm(id) {
+      if (!confirm('Are you sure you want to delete this record?')) return;
+      try {
+        const res = await fetch('/api/farms/' + id, { method: 'DELETE' });
+        loadFarms();
+      } catch (e) {
+        alert('Delete failed.');
+      }
+    }
+
+    function exportData(type) {
+      if (type === 'json') {
+        const blob = new Blob([JSON.stringify(farms, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `libona_farms_backup_${Date.now()}.json`;
+        a.click();
+      } else if (type === 'csv') {
+        let csv = 'ID,Farmer Name,Barangay,Address,Crop Type,Area Hectares,Latitude,Longitude\n';
+        farms.forEach(f => {
+          const lat = f.centerCoords?.latitude || '';
+          const lng = f.centerCoords?.longitude || '';
+          csv += `"${f.id}","${f.farmerName}","${f.barangay}","${f.address||''}","${f.cropType}","${((f.area||0)/10000).toFixed(4)}","${lat}","${lng}"\n`;
+        });
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `libona_farms_${Date.now()}.csv`;
+        a.click();
+      }
+    }
+
+    loadConfig();
+    loadFarms();
+  </script>
+</body>
+</html>

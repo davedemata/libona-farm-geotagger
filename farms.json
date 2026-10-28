@@ -1,0 +1,30 @@
+[
+  {
+    "farmerName": "Test Farmer Sync",
+    "barangay": "Gango",
+    "address": "Purok 1",
+    "cropType": "Corn",
+    "area": 15000,
+    "centerCoords": {
+      "latitude": 8.2719,
+      "longitude": 124.7479
+    },
+    "points": [
+      {
+        "latitude": 8.2719,
+        "longitude": 124.7479
+      },
+      {
+        "latitude": 8.2725,
+        "longitude": 124.7485
+      },
+      {
+        "latitude": 8.2715,
+        "longitude": 124.749
+      }
+    ],
+    "id": "1793214871985",
+    "syncedAt": "2026-10-28T19:14:31.985Z",
+    "source": "Android Field App"
+  }
+]

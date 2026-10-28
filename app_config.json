@@ -1,0 +1,59 @@
+{
+  "appName": "LGU Libona Farm Geotagger",
+  "currentVersion": "2.1.0",
+  "cropTypes": [
+    {
+      "name": "Corn",
+      "label": "Corn (Mais)",
+      "fill": "#A5D6A7",
+      "stroke": "#2E7D32"
+    },
+    {
+      "name": "Cassava",
+      "label": "Cassava (Balanghoy)",
+      "fill": "#D7CCC8",
+      "stroke": "#6D4C41"
+    },
+    {
+      "name": "Rice",
+      "label": "Rice (Humay)",
+      "fill": "#FFF59D",
+      "stroke": "#FBC02D"
+    },
+    {
+      "name": "Vegetables",
+      "label": "Vegetables (Utanon)",
+      "fill": "#80CBC4",
+      "stroke": "#00695C"
+    },
+    {
+      "name": "Fruit Trees",
+      "label": "Fruit Trees (Prutas)",
+      "fill": "#FFCC80",
+      "stroke": "#EF6C00"
+    },
+    {
+      "name": "Others",
+      "label": "Others",
+      "fill": "#E1BEE7",
+      "stroke": "#7B1FA2"
+    }
+  ],
+  "barangays": [
+    "Capihan",
+    "Crossing",
+    "Gango",
+    "Kiliog",
+    "Kinawe",
+    "Laturan",
+    "Maambong",
+    "Nangka",
+    "Palabucan",
+    "Poblacion",
+    "Pongol",
+    "San Jose",
+    "Santa Fe",
+    "Sil-ipon"
+  ],
+  "adminPin": "1234"
+}
