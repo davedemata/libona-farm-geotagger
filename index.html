@@ -10,6 +10,8 @@
     :root {
       --primary: #1B5E20;
       --primary-light: #2E7D32;
+      --primary-dark: #0D3311;
+      --accent-orange: #E65100;
       --bg: #F4F6F8;
       --card: #FFFFFF;
       --text: #212121;
@@ -22,47 +24,79 @@
     header {
       background: var(--primary);
       color: white;
-      padding: 12px 24px;
+      padding: 10px 22px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
       z-index: 1000;
     }
-    .header-title h1 { font-size: 20px; font-weight: 800; letter-spacing: 0.5px; }
+    .header-title h1 { font-size: 19px; font-weight: 800; letter-spacing: 0.4px; }
     .header-title p { font-size: 12px; color: #C8E6C9; margin-top: 2px; }
-    .header-badge {
+    .header-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
     .live-indicator {
       display: flex;
       align-items: center;
       gap: 6px;
       background: rgba(255,255,255,0.15);
-      padding: 6px 12px;
+      padding: 6px 11px;
       border-radius: 20px;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 600;
     }
     .dot { width: 8px; height: 8px; background: #69F0AE; border-radius: 50%; box-shadow: 0 0 8px #69F0AE; animation: pulse 2s infinite; }
     @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
     
+    .btn-corporate {
+      background: linear-gradient(135deg, #FF9800, #E65100);
+      color: #FFF;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 12.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(230,81,0,0.35);
+      transition: all 0.2s;
+    }
+    .btn-corporate:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(230,81,0,0.45); }
+
     .btn-print {
       background: #FFF;
       color: var(--primary);
       border: none;
-      padding: 7px 16px;
+      padding: 7px 14px;
       border-radius: 8px;
       font-weight: bold;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 12.5px;
       display: flex;
       align-items: center;
       gap: 6px;
     }
     .btn-print:hover { background: #E8F5E9; }
+
+    .btn-settings {
+      background: rgba(255,255,255,0.18);
+      color: #FFF;
+      border: 1px solid rgba(255,255,255,0.35);
+      padding: 7px 13px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-settings:hover { background: rgba(255,255,255,0.28); }
 
     /* Layout */
     .main-container {
@@ -70,34 +104,46 @@
       flex: 1;
       height: calc(100vh - 65px);
       overflow: hidden;
+      position: relative;
     }
 
     /* Left Sidebar: Controls & Stats */
     .sidebar {
-      width: 420px;
+      width: 430px;
       background: var(--card);
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       overflow-y: auto;
-      padding: 18px;
-      gap: 16px;
+      padding: 16px;
+      gap: 14px;
     }
 
     /* Filter Card */
-    .filter-sec h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: #666; margin-bottom: 8px; }
-    .pills-scroll { display: flex; flex-wrap: wrap; gap: 6px; }
+    .filter-sec h3 {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #666;
+      margin-bottom: 7px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .pills-scroll { display: flex; flex-wrap: wrap; gap: 5px; }
     .pill {
       background: #F0F4F1;
       border: 1px solid #DCE5DE;
-      padding: 5px 11px;
+      padding: 5px 10px;
       border-radius: 14px;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 600;
       cursor: pointer;
       color: #333;
+      transition: all 0.15s;
     }
-    .pill.active { background: var(--primary); color: white; border-color: var(--primary); }
+    .pill:hover { background: #E4ECE5; }
+    .pill.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 2px 4px rgba(27,94,32,0.25); }
 
     /* Stats Overview Grid */
     .stats-grid {
@@ -109,16 +155,43 @@
       background: #F9FBF9;
       border: 1px solid #E2EBE2;
       border-radius: 10px;
-      padding: 12px;
+      padding: 10px 12px;
       text-align: center;
     }
-    .stat-val { font-size: 24px; font-weight: 800; color: var(--primary); }
-    .stat-lbl { font-size: 11px; color: #666; font-weight: 600; margin-top: 2px; }
+    .stat-val { font-size: 22px; font-weight: 800; color: var(--primary); }
+    .stat-lbl { font-size: 10.5px; color: #666; font-weight: 600; margin-top: 2px; }
 
     /* Crop breakdown table */
-    .crop-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 6px; }
-    .crop-table th { background: #F0F4F1; text-align: left; padding: 7px 8px; color: #444; }
-    .crop-table td { padding: 8px; border-bottom: 1px solid #EEE; }
+    .crop-table { width: 100%; border-collapse: collapse; font-size: 11.5px; margin-top: 4px; }
+    .crop-table th { background: #F0F4F1; text-align: left; padding: 6px 8px; color: #444; font-weight: 700; }
+    .crop-table td { padding: 7px 8px; border-bottom: 1px solid #EEE; }
+    .crop-tr { cursor: pointer; transition: background 0.15s; user-select: none; }
+    .crop-tr:hover { background: #E8F5E9; }
+    .crop-tr.active-crop { background: #E8F5E9; font-weight: bold; }
+    .farmers-subrow td { padding: 0 !important; background: #F9FBF9; border-bottom: 2px solid #C8E6C9; }
+    .farmers-sublist { padding: 8px 10px; display: flex; flex-direction: column; gap: 5px; }
+    .farmer-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #FFFFFF;
+      border: 1px solid #E0E0E0;
+      border-radius: 6px;
+      padding: 6px 9px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .farmer-item:hover {
+      border-color: #2E7D32;
+      background: #F1F8E9;
+      transform: translateX(2px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    }
+    .farmer-item-name { font-weight: 700; color: #1B5E20; font-size: 12px; }
+    .farmer-item-loc { font-size: 10.5px; color: #666; margin-top: 1px; }
+    .farmer-item-area { font-weight: 800; color: #2E7D32; font-size: 11px; }
+    .live-stream-item { cursor: pointer; transition: all 0.15s; }
+    .live-stream-item:hover { transform: translateX(2px); box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
 
     /* Right Section: Map */
     .map-container {
@@ -128,35 +201,53 @@
     }
     #map { width: 100%; height: 100%; }
 
+    /* Drawing Mode Top Floating Banner */
+    .draw-banner {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(33, 33, 33, 0.94);
+      color: white;
+      padding: 10px 18px;
+      border-radius: 30px;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      z-index: 1500;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+      border: 1px solid #FF9800;
+      font-size: 13px;
+    }
+    .draw-banner button {
+      padding: 5px 12px;
+      border-radius: 16px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .btn-draw-save { background: #4CAF50; color: white; }
+    .btn-draw-clear { background: #757575; color: white; }
+    .btn-draw-cancel { background: #F44336; color: white; }
+
     /* Print View Styles */
     @media print {
       body { height: auto; overflow: visible; background: white; }
       header { background: white; color: black; border-bottom: 2px solid #2E7D32; }
       .sidebar, .map-container { display: block; width: 100%; height: auto; }
-      .pills-scroll, .btn-print, .live-indicator, .settings-modal, .btn-settings { display: none !important; }
-      #map { height: 400px; margin-top: 15px; }
+      .pills-scroll, .btn-print, .btn-corporate, .live-indicator, .settings-modal, .btn-settings, .draw-banner, .btn-close-modal, .modal-actions { display: none !important; }
+      #map { height: 420px; margin-top: 15px; }
+      #farmerModal[style*="display: flex"], #farmerModal[style*="display:flex"] { position: static; width: auto; height: auto; background: transparent; }
+      #farmerModal[style*="display: flex"] .modal-card, #farmerModal[style*="display:flex"] .modal-card { width: 100% !important; max-width: 100% !important; box-shadow: none !important; border: 2px solid #2E7D32 !important; }
     }
 
-    /* Settings Gear & Modal */
-    .btn-settings {
-      background: rgba(255,255,255,0.2);
-      color: #FFF;
-      border: 1px solid rgba(255,255,255,0.35);
-      padding: 7px 12px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .btn-settings:hover { background: rgba(255,255,255,0.3); }
-
+    /* Modal Styling */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(2px);
       z-index: 2000;
       display: none;
       justify-content: center;
@@ -165,9 +256,15 @@
     .modal-card {
       background: #FFF;
       border-radius: 14px;
-      width: 380px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      width: 440px;
+      max-width: 95vw;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
       overflow: hidden;
+      animation: modalFadeIn 0.2s ease-out;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(-12px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .modal-header {
       background: var(--primary);
@@ -177,32 +274,86 @@
       justify-content: space-between;
       align-items: center;
     }
+    .modal-header.corporate {
+      background: linear-gradient(135deg, #EF6C00, #E65100);
+    }
     .modal-header h2 { font-size: 16px; font-weight: bold; }
     .btn-close-modal {
-      background: none; border: none; color: #FFF; font-size: 18px; cursor: pointer; font-weight: bold;
+      background: none; border: none; color: #FFF; font-size: 20px; cursor: pointer; font-weight: bold;
     }
     .modal-body {
       padding: 18px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
+      max-height: 80vh;
+      overflow-y: auto;
     }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .form-group label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #455A64;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 9px 11px;
+      border: 1px solid #CFD8DC;
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+      font-family: inherit;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: #2E7D32;
+      box-shadow: 0 0 0 2px rgba(46,125,50,0.15);
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .btn-modal-cancel {
+      background: #ECEFF1;
+      color: #455A64;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn-modal-submit {
+      background: #E65100;
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn-modal-submit:hover { background: #BF360C; }
+
     .setting-toggle-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 0;
+      padding: 10px 0;
       border-bottom: 1px solid #EEE;
     }
-    .setting-info h4 { font-size: 14px; color: #333; margin-bottom: 2px; }
-    .setting-info p { font-size: 11px; color: #777; }
+    .setting-info h4 { font-size: 13.5px; color: #333; margin-bottom: 2px; }
+    .setting-info p { font-size: 11px; color: #777; line-height: 1.3; }
 
     /* Switch styling */
     .switch {
       position: relative;
       display: inline-block;
-      width: 46px;
+      width: 44px;
       height: 24px;
+      flex-shrink: 0;
     }
     .switch input { opacity: 0; width: 0; height: 0; }
     .slider {
@@ -214,35 +365,71 @@
       background-color: white; transition: .3s; border-radius: 50%;
     }
     input:checked + .slider { background-color: #2E7D32; }
-    input:checked + .slider:before { transform: translateX(22px); }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    .farm-map-tooltip {
+      background: rgba(33, 33, 33, 0.88);
+      color: #FFF;
+      border: none;
+      border-radius: 6px;
+      padding: 5px 8px;
+      font-size: 11.5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .leaflet-tooltip-pane .farm-map-tooltip::before { display: none; }
   </style>
 </head>
 <body>
 
+  <!-- Top Floating Drawing Banner for Corporate Tagging -->
+  <div class="draw-banner" id="drawBanner">
+    <span>🍍 <b>Corporate Pineapple Tagging Active:</b> Click on satellite map to add boundary points (<span id="drawPointCount">0</span> points)</span>
+    <button class="btn-draw-clear" onclick="clearDrawnPoints()">🗑️ Reset</button>
+    <button class="btn-draw-save" onclick="finishDrawnPoints()">💾 Save Polygon</button>
+    <button class="btn-draw-cancel" onclick="cancelDrawingMode()">✕ Cancel</button>
+  </div>
+
   <header>
-    <div class="header-title">
-      <h1>🏢 MUNICIPALITY OF LIBONA — CENTRAL SERVER DASHBOARD</h1>
-      <p>Office Consolidated Monitoring & Real-time Field Geotagging Console</p>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <img src="/logo.png" alt="Libona Agri Logo" style="width:46px;height:46px;object-fit:contain;" />
+      <div class="header-title">
+        <h1>MUNICIPALITY OF LIBONA — CENTRAL SERVER DASHBOARD</h1>
+        <p>Municipal Agriculture Office • Real-time Field Geotagging Console</p>
+      </div>
     </div>
-    <div class="header-badge">
+    <div class="header-actions">
       <div class="live-indicator">
         <span class="dot"></span>
-        <span>LIVE FIELD INTAKE</span>
+        <span>LIVE INTAKE</span>
       </div>
+      <button class="btn-corporate" onclick="openCorporateModal()">🍍 Tag Corporate Pineapple</button>
       <button class="btn-print" onclick="window.print()">🖨️ Print</button>
       <button class="btn-settings" onclick="openSettings()">⚙️ Settings</button>
-      <a href="/admin.html" style="color: #FFF; text-decoration: none; font-size: 13px; font-weight: bold; background: rgba(0,0,0,0.25); padding: 7px 12px; border-radius: 8px;">🛠️ Admin</a>
+      <a href="/admin.html" style="color: #FFF; text-decoration: none; font-size: 12.5px; font-weight: bold; background: rgba(0,0,0,0.25); padding: 7px 12px; border-radius: 8px;">🛠️ Admin</a>
     </div>
   </header>
 
   <div class="main-container">
     <!-- Left Panel -->
     <div class="sidebar">
-      <!-- Filter Barangay -->
+      <!-- Search Farmer Name (Consolidates all parcels across Libona) -->
+      <div class="filter-sec" style="margin-bottom: 10px;">
+        <div style="position:relative;">
+          <input type="text" id="farmerSearchInput" placeholder="🔍 Pangitaa ang Mag-uuma (Search name)..." 
+            oninput="handleFarmerSearch(this.value)"
+            style="width: 100%; padding: 8px 12px 8px 30px; border: 1.5px solid #C8E6C9; border-radius: 8px; font-size: 12px; outline: none; background: #FFF;" />
+          <span style="position:absolute; left: 9px; top: 8px; font-size: 13px; color: #888;">🔍</span>
+          <button id="clearSearchBtn" onclick="clearFarmerSearch()" style="display:none; position:absolute; right:8px; top:7px; border:none; background:#EEE; border-radius:50%; width:18px; height:18px; font-size:10px; cursor:pointer;">✕</button>
+        </div>
+        <div id="searchDropdown" style="display:none; margin-top:5px; max-height:170px; overflow-y:auto; background:#FFF; border:1.5px solid #C8E6C9; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.1); padding:4px;">
+        </div>
+      </div>
+
+      <!-- Filter Baranggay -->
       <div class="filter-sec">
-        <h3>Filter Barangay:</h3>
+        <h3>Filter Baranggay:</h3>
         <div class="pills-scroll" id="brgyPills">
-          <button class="pill active" onclick="setBrgy('ALL')">All Barangays</button>
+          <button class="pill active" onclick="setBrgy('ALL')">All Baranggays</button>
         </div>
       </div>
 
@@ -258,7 +445,7 @@
       <div class="stats-grid">
         <div class="stat-box">
           <div class="stat-val" id="statFarmers">0</div>
-          <div class="stat-lbl">TOTAL FARMS</div>
+          <div class="stat-lbl">TOTAL FARMS TAGGED</div>
         </div>
         <div class="stat-box">
           <div class="stat-val" id="statArea">0.00</div>
@@ -272,8 +459,8 @@
         <table class="crop-table">
           <thead>
             <tr>
-              <th>Crop Type</th>
-              <th style="text-align: center;">Farms</th>
+              <th>Commodity</th>
+              <th style="text-align: center;">Parcels</th>
               <th style="text-align: right;">Area (ha)</th>
             </tr>
           </thead>
@@ -285,8 +472,8 @@
 
       <!-- Recent Live Intake Stream -->
       <div class="filter-sec" style="flex: 1;">
-        <h3>Recent Submissions from 14 Barangays:</h3>
-        <div id="liveStream" style="font-size: 12px; display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; padding-right: 4px;">
+        <h3>Recent Submissions from 14 Baranggays:</h3>
+        <div id="liveStream" style="font-size: 11.5px; display: flex; flex-direction: column; gap: 7px; max-height: 230px; overflow-y: auto; padding-right: 4px;">
           <!-- Dynamically populated -->
         </div>
       </div>
@@ -298,67 +485,256 @@
     </div>
   </div>
 
+  <!-- Settings Gear Modal -->
+  <div class="modal-overlay" id="settingsModal" onclick="if(event.target===this)closeSettings()">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>⚙️ Map & Shading Settings</h2>
+        <button class="btn-close-modal" onclick="closeSettings()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Toggle 1: Auto-Shade on All Baranggays & All Crops -->
+        <div class="setting-toggle-row">
+          <div class="setting-info">
+            <h4>Auto-Shade on "All Baranggays & All Crops"</h4>
+            <p>Kung naka-OFF (default), magpabiling unshaded ang tanan farm kung All Baranggays ug All Crops ang gipili aron limpyo ang mapa. Kung mag-select ug specific baranggay o crop, mo-auto shade dayon ang mga tagged areas.</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="toggleAllShade" onchange="toggleAllShading(this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <!-- Toggle 2: Baranggay Polygon Boundaries -->
+        <div class="setting-toggle-row">
+          <div class="setting-info">
+            <h4>Baranggay Boundaries (Polygons)</h4>
+            <p>Ipakita o itago ang colored polygon borders sa 14 ka baranggay sa Libona</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="toggleBrgyBoundaries" checked onchange="toggleBarangayPolygons(this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <!-- Toggle 3: Municipal Outer Boundary -->
+        <div class="setting-toggle-row">
+          <div class="setting-info">
+            <h4>Libona Municipal Border Line</h4>
+            <p>Ipakita o itago ang puti nga outer boundary border sa tibuok Libona</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="toggleMunicipalBorder" checked onchange="toggleMunicipalBorder(this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Corporate Pineapple Modal -->
+  <div class="modal-overlay" id="corpModal" onclick="if(event.target===this)closeCorporateModal()">
+    <div class="modal-card">
+      <div class="modal-header corporate">
+        <h2>🍍 Tag Corporate Pineapple Plantation</h2>
+        <button class="btn-close-modal" onclick="closeCorporateModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:12px; color:#555; line-height:1.4;">
+          Exclusively for Corporate Plantations (Del Monte, Dole, Sumifru) sa Libona. Dili kini makita sa Field Android App aron limpyo ang individual smallholders geotagging.
+        </p>
+
+        <div class="form-group">
+          <label>Corporation / Company Name:</label>
+          <select id="corpCompany">
+            <option value="Del Monte Philippines, Inc. (DMPI)">Del Monte Philippines, Inc. (DMPI)</option>
+            <option value="Dole Philippines, Inc.">Dole Philippines, Inc.</option>
+            <option value="Sumifru Philippines Corp.">Sumifru Philippines Corp.</option>
+            <option value="Independent Corporate Grower">Independent Corporate Grower</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Baranggay Location:</label>
+          <select id="corpBarangay">
+            <!-- Populated dynamically with 14 baranggays -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Camp / Block Identifier / Sitio:</label>
+          <input type="text" id="corpBlock" placeholder="e.g. Camp 1 - Block 14B or Zone 3" />
+        </div>
+
+        <div class="form-group">
+          <label>Total Land Area (Hectares):</label>
+          <input type="number" id="corpAreaHa" step="0.01" placeholder="e.g. 24.50" />
+        </div>
+
+        <div class="form-group">
+          <label>Plantation Boundary (Polygon):</label>
+          <div style="display:flex; gap:8px; margin-bottom:6px;">
+            <button type="button" class="btn-corporate" style="flex:1; justify-content:center; padding:8px;" onclick="startDrawingMode()">
+              📍 Click to Draw on Map
+            </button>
+            <button type="button" class="btn-modal-cancel" style="padding:8px 12px;" onclick="document.getElementById('corpCoordsWrapper').style.display='block'">
+              📋 Paste GPS Coords
+            </button>
+          </div>
+          <div id="corpCoordsWrapper" style="display:none;">
+            <textarea id="corpCoordsText" rows="3" placeholder="Lat, Lng per line or JSON coordinates..."></textarea>
+          </div>
+          <span id="corpPointsStatus" style="font-size:11.5px; color:#2E7D32; font-weight:600;">No boundary points attached yet.</span>
+        </div>
+
+        <div class="form-group">
+          <label>Agronomist Notes / Status:</label>
+          <input type="text" id="corpNotes" placeholder="e.g. High density MD2 variety, vegetative stage" />
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-modal-cancel" onclick="closeCorporateModal()">Cancel</button>
+          <button type="button" class="btn-modal-submit" onclick="submitCorporatePineapple()">💾 Save Corporate Plantation</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detailed Farmer Field Dossier Modal -->
+  <div class="modal-overlay" id="farmerModal" onclick="if(event.target===this)closeFarmerModal()">
+    <div class="modal-card" style="width: 580px; max-width: 95vw;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #1B5E20, #2E7D32);">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:26px;">👨‍🌾</span>
+          <div>
+            <h2 id="fModalName" style="font-size:16px; font-weight:bold;">Farmer Name</h2>
+            <p id="fModalSub" style="font-size:11.5px; color:#C8E6C9; margin-top:1px;">Registered Field Farm Dossier • LGU Libona</p>
+          </div>
+        </div>
+        <button class="btn-close-modal" onclick="closeFarmerModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="gap:10px; max-height:80vh; overflow-y:auto;">
+        <!-- Top Metrics Cards -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <div style="background:#F4F6F8; padding:8px 12px; border-radius:8px; border:1px solid #E0E0E0;">
+            <div style="font-size:10px; color:#666; font-weight:bold; text-transform:uppercase;">Baranggay Scope</div>
+            <div id="fModalLoc" style="font-size:12.5px; font-weight:bold; color:#212121; margin-top:2px;">Brgy. Maambong</div>
+          </div>
+          <div style="background:#F4F6F8; padding:8px 12px; border-radius:8px; border:1px solid #E0E0E0;">
+            <div style="font-size:10px; color:#666; font-weight:bold; text-transform:uppercase;">Registered Parcels</div>
+            <div id="fModalParcelCount" style="font-size:12.5px; font-weight:bold; color:#00695C; margin-top:2px;">1 Parcel</div>
+          </div>
+          <div style="background:#F4F6F8; padding:8px 12px; border-radius:8px; border:1px solid #E0E0E0;">
+            <div style="font-size:10px; color:#666; font-weight:bold; text-transform:uppercase;">Total Land Area</div>
+            <div id="fModalArea" style="font-size:14.5px; font-weight:800; color:#1B5E20; margin-top:2px;">1.05 ha (10,520 m²)</div>
+          </div>
+          <div style="background:#F4F6F8; padding:8px 12px; border-radius:8px; border:1px solid #E0E0E0;">
+            <div style="font-size:10px; color:#666; font-weight:bold; text-transform:uppercase;">Commodity Group</div>
+            <div id="fModalCrop" style="margin-top:2px;">
+              <span id="fModalCropBadge" style="padding:2px 7px; border-radius:4px; font-weight:bold; font-size:11.5px; display:inline-block;">High Value Crops</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Single Parcel Detail View (Shown when exactly 1 parcel in view) -->
+        <div id="fModalSingleView" style="display:flex; flex-direction:column; gap:8px;">
+          <div style="background:#E8F5E9; border:1px solid #C8E6C9; border-radius:8px; padding:9px 12px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-size:10px; color:#2E7D32; font-weight:bold;">📍 CENTER GEOTAG COORDINATES (OFFICIAL)</div>
+              <div id="fModalCoords" style="font-size:12px; font-weight:bold; color:#1B5E20; font-family:monospace; margin-top:2px;">Lat: 8.257396, Lng: 124.812470</div>
+            </div>
+            <button style="background:#2E7D32; color:#FFF; border:none; padding:6px 12px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="panToFarmerFromModal()">🗺️ Focus on Map</button>
+          </div>
+          <div style="background:#FFF; border:1px solid #E0E0E0; border-radius:8px; padding:9px 12px;">
+            <div style="font-size:10px; color:#2E7D32; font-weight:bold; text-transform:uppercase;">Agri-Tech's Notes and Remarks</div>
+            <div id="fModalNotes" style="font-size:12.5px; color:#212121; margin-top:3px; line-height:1.45; white-space:pre-wrap;">Walay dugang notes.</div>
+          </div>
+        </div>
+
+        <!-- Multi-Parcels Breakdown View (Shown when multiple parcels exist) -->
+        <div id="fModalMultiView" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span style="font-size:11.5px; font-weight:bold; color:#333;">🌾 Breakdown sa Tanang Luna / Farm Parcels:</span>
+            <span id="fModalScopeNotice" style="font-size:10.5px; color:#0288D1; font-weight:bold;"></span>
+          </div>
+          <div id="fModalParcelsList" style="max-height:240px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; padding-right:2px;">
+          </div>
+        </div>
+
+        <!-- Metadata footer -->
+        <div style="font-size:10.5px; color:#777; border-top:1px dashed #DDD; padding-top:6px; display:flex; justify-content:space-between;">
+          <span id="fModalSource">Source: Android Field App</span>
+          <span id="fModalSyncTime">Synced: N/A</span>
+        </div>
+
+        <!-- Modal Actions -->
+        <div class="modal-actions" style="margin-top:4px;">
+          <button type="button" class="btn-modal-cancel" onclick="closeFarmerModal()">Close</button>
+          <button type="button" class="btn-corporate" style="background:#1B5E20;" onclick="panToAllFarmerParcels()">📍 View on Satellite Map</button>
+          <button type="button" class="btn-print" style="background:#2E7D32; color:#FFF;" onclick="printFarmerCertificate()">🖨️ Print Profile</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    const LIBONA_BARANGAYS = [
+    const LIBONA_BARANGGAYS = [
       "Capihan", "Crossing", "Gango", "Kiliog", "Kinawe", "Laturan",
       "Maambong", "Nangka", "Palabucan", "Poblacion", "Pongol",
       "San Jose", "Santa Fe", "Sil-ipon"
     ];
+    const LIBONA_BARANGAYS = LIBONA_BARANGGAYS;
 
-    // Official Coordinates & Approximated Spatial Radius for Libona Barangays
-    const BARANGAY_GEO_DATA = {
-      Capihan:      { lat: 8.2493, lng: 124.7748, radius: 2400 },
-      Crossing:     { lat: 8.3231, lng: 124.7915, radius: 2100 },
-      Gango:        { lat: 8.3887, lng: 124.6655, radius: 2600 },
-      Kiliog:       { lat: 8.3390, lng: 124.7024, radius: 2700 },
-      Kinawe:       { lat: 8.3686, lng: 124.6846, radius: 2300 },
-      Laturan:      { lat: 8.3067, lng: 124.7686, radius: 2500 },
-      Maambong:     { lat: 8.2633, lng: 124.8166, radius: 2800 },
-      Nangka:       { lat: 8.3000, lng: 124.7367, radius: 2200 },
-      Palabucan:    { lat: 8.3985, lng: 124.7802, radius: 2500 },
-      Poblacion:    { lat: 8.3349, lng: 124.7469, radius: 1800 },
-      Pongol:       { lat: 8.2791, lng: 124.7481, radius: 2300 },
-      'San Jose':   { lat: 8.2967, lng: 124.8007, radius: 2600 },
-      'Santa Fe':   { lat: 8.3444, lng: 124.7794, radius: 2200 },
-      'Sil-ipon':   { lat: 8.2261, lng: 124.8223, radius: 3200 }
-    };
-
+    // Lightened & distinct commodity colors with Pineapple (Corporate)
     const CROP_METADATA = {
-      Rice:               { label: 'Rice (Humay)',           fill: '#FFF59D', stroke: '#FBC02D' },
-      Corn:               { label: 'Corn (Mais)',            fill: '#A5D6A7', stroke: '#2E7D32' },
-      Cassava:            { label: 'Cassava (Balanghoy)',    fill: '#D7CCC8', stroke: '#6D4C41' },
-      Coffee:             { label: 'Coffee (Kape)',          fill: '#BCAAA4', stroke: '#4E342E' },
-      Coconut:            { label: 'Coconut (Lubi)',         fill: '#C5E1A5', stroke: '#558B2F' },
-      'High Value Crops': { label: 'High Value Crops (HVC)', fill: '#80CBC4', stroke: '#00695C' },
-      'Fish Pond':        { label: 'Fish Pond',              fill: '#81D4FA', stroke: '#0277BD' },
-      MPDP:               { label: 'MPDP',                   fill: '#FFE082', stroke: '#FF8F00' },
-      Others:             { label: 'Others',                 fill: '#E1BEE7', stroke: '#7B1FA2' }
+      Corn:               { label: 'Corn (Mais)',                               fill: '#A5D6A7', stroke: '#2E7D32' },
+      Rice:               { label: 'Rice (Humay)',                              fill: '#FFF59D', stroke: '#FBC02D' },
+      Pineapple:          { label: 'Pineapple (Corporate)',                     fill: '#FFE082', stroke: '#E65100', corporate: true },
+      'Banana (Lakatan)': { label: 'Banana (Lakatan)',                          fill: '#FFF9C4', stroke: '#F57F17' },
+      Coffee:             { label: 'Coffee (Kape)',                             fill: '#D7CCC8', stroke: '#5D4037' },
+      Cassava:            { label: 'Cassava (Balanghoy)',                       fill: '#EFEBE9', stroke: '#8D6E63' },
+      Coconut:            { label: 'Coconut (Lubi)',                            fill: '#DCEDC8', stroke: '#558B2F' },
+      'High Value Crops': { label: 'High Value Crops (HVC)',                    fill: '#80DEEA', stroke: '#00838F' },
+      'Fish Pond':        { label: 'Fish Pond',                                 fill: '#81D4FA', stroke: '#0288D1' },
+      MPDP:               { label: 'MPDP (Solar Dryer / Drier)',                fill: '#FFCCBC', stroke: '#D84315' },
+      Mangosteen:         { label: 'Mangosteen',                                fill: '#E1BEE7', stroke: '#7B1FA2' },
+      Others:             { label: 'Others',                                    fill: '#CFD8DC', stroke: '#546E7A' }
     };
 
     let selectedBrgy = 'ALL';
     let selectedCrop = 'ALL';
+    let expandedCrop = null;
+    let currentModalFarm = null;
+    let shadeAllFilter = (localStorage.getItem('libona_shade_all_filter') === 'true');
     let allFarms = [];
     let map, polygonLayers = [];
     let brgyBoundaryLayer = null;
     let allBrgyPolygonsLayer = null;
+    let libonaMunicipalLayer = null;
     let brgyGeojsonData = null;
 
-    // Initialize Map centered on Libona, Bukidnon
-    map = L.map('map').setView([8.3333, 124.7433], 12);
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      maxZoom: 19, attribution: 'Esri Satellite Tiles'
-    }).addTo(map);
+    // Corporate Drawing state
+    let isDrawingCorp = false;
+    let drawnCoords = [];
+    let drawnPolyLayer = null;
+    let drawnMarkers = [];
 
-    // Add Reference Label overlay
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
-      maxZoom: 19
+    // Sync toggle checkbox
+    document.getElementById('toggleAllShade').checked = shadeAllFilter;
+
+    // Initialize Map centered on Libona, Bukidnon (Ultra Deep Zoom up to Level 22)
+    map = L.map('map', { maxZoom: 22 }).setView([8.3333, 124.7433], 13);
+    L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+      maxNativeZoom: 20,
+      maxZoom: 22,
+      attribution: 'Google Satellite Hybrid'
     }).addTo(map);
 
     // Official Libona Municipal Outer Boundary Outline
     fetch('/libona_full_boundary.geojson')
       .then(r => r.json())
       .then(geo => {
-        L.geoJSON(geo, {
+        libonaMunicipalLayer = L.geoJSON(geo, {
           style: {
             color: '#FFFFFF',
             weight: 3.5,
@@ -369,7 +745,7 @@
       })
       .catch(e => console.log('Boundary load:', e));
 
-    // Load Polygon Boundaries for All 14 Barangays (NO PINS, TRUE POLYGON BOUNDARIES)
+    // Load Polygon Boundaries for All 14 Barangays
     fetch('/libona_barangay_polygons.geojson')
       .then(r => r.json())
       .then(data => {
@@ -381,7 +757,7 @@
               weight: 2,
               dashArray: '4, 4',
               fillColor: feature.properties.color || '#4CAF50',
-              fillOpacity: 0.15
+              fillOpacity: 0.12
             };
           },
           onEachFeature: function(feature, layer) {
@@ -391,7 +767,9 @@
               direction: 'center',
               className: 'brgy-tooltip'
             });
-            layer.on('click', () => setBrgy(bName));
+            layer.on('click', () => {
+              if (!isDrawingCorp) setBrgy(bName);
+            });
           }
         }).addTo(map);
       })
@@ -399,6 +777,7 @@
 
     // Populate Barangay Buttons
     const pillsContainer = document.getElementById('brgyPills');
+    const corpBrgySelect = document.getElementById('corpBarangay');
     LIBONA_BARANGAYS.forEach(b => {
       const btn = document.createElement('button');
       btn.className = 'pill';
@@ -406,6 +785,12 @@
       btn.onclick = () => setBrgy(b);
       btn.id = 'pill-' + b;
       pillsContainer.appendChild(btn);
+
+      // Add to corporate select
+      const opt = document.createElement('option');
+      opt.value = b;
+      opt.innerText = 'Brgy. ' + b;
+      corpBrgySelect.appendChild(opt);
     });
 
     // Populate Crop Filter Buttons
@@ -414,7 +799,7 @@
       const meta = CROP_METADATA[c];
       const btn = document.createElement('button');
       btn.className = 'pill';
-      btn.innerHTML = `<span style="display:inline-block; width:9px; height:9px; background:${meta.fill}; border:1.5px solid ${meta.stroke}; border-radius:2px; margin-right:4px;"></span>${c}`;
+      btn.innerHTML = `<span style="display:inline-block; width:9px; height:9px; background:${meta.fill}; border:1.5px solid ${meta.stroke}; border-radius:2px; margin-right:4px;"></span>${meta.label || c}`;
       btn.onclick = () => setCrop(c);
       btn.id = 'crop-pill-' + c.replace(/\s+/g, '-');
       cropPillsContainer.appendChild(btn);
@@ -431,8 +816,7 @@
 
       if (b === 'ALL') {
         pillsContainer.children[0].classList.add('active');
-        map.setView([8.3333, 124.7433], 12);
-        if (allBrgyPolygonsLayer) allBrgyPolygonsLayer.setStyle({ fillOpacity: 0.15, weight: 2 });
+        if (allBrgyPolygonsLayer) allBrgyPolygonsLayer.setStyle({ fillOpacity: 0.12, weight: 2 });
       } else {
         const target = document.getElementById('pill-' + b);
         if (target) target.classList.add('active');
@@ -444,14 +828,11 @@
             brgyBoundaryLayer = L.geoJSON(feat, {
               style: {
                 color: '#FFD600',
-                weight: 4,
+                weight: 3.5,
                 fillColor: feat.properties.color || '#FFD600',
-                fillOpacity: 0.35
+                fillOpacity: 0.25
               }
             }).addTo(map);
-
-            const bounds = brgyBoundaryLayer.getBounds();
-            map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 });
           }
         }
       }
@@ -469,23 +850,67 @@
       render();
     }
 
+    // Extract coordinates safely from Supabase f.polygonCoordinates or f.points
+    function getFarmPoints(f) {
+      const raw = f.polygonCoordinates || f.points;
+      if (!raw) return [];
+      let pts = raw;
+      if (typeof pts === 'string') {
+        try { pts = JSON.parse(pts); } catch (e) { return []; }
+      }
+      if (!Array.isArray(pts)) return [];
+      return pts.map(p => {
+        if (Array.isArray(p)) return [Number(p[0]), Number(p[1])];
+        if (p && typeof p === 'object') {
+          const lat = Number(p.latitude ?? p.lat);
+          const lng = Number(p.longitude ?? p.lng);
+          if (!isNaN(lat) && !isNaN(lng)) return [lat, lng];
+        }
+        return null;
+      }).filter(Boolean);
+    }
+
     async function loadData() {
       try {
         const res = await fetch('/api/farms');
         const json = await res.json();
-        if (json.success) {
+        if (json.success && Array.isArray(json.data)) {
           allFarms = json.data;
           render();
+          return;
         }
-      } catch (e) {
-        console.error('Fetch error:', e);
+      } catch (e) {}
+
+      // Fallback: Direct Supabase Cloud Fetch
+      try {
+        const res = await fetch('https://cjygsethbhnjaewzdefv.supabase.co/rest/v1/farms?select=*', {
+          headers: {
+            'apikey': 'sb_publishable_-6L7EsFK9muCMfdC80Tr1w_Mou9nUGs',
+            'Authorization': 'Bearer sb_publishable_-6L7EsFK9muCMfdC80Tr1w_Mou9nUGs'
+          }
+        });
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          allFarms = data;
+          render();
+        }
+      } catch (err) {
+        console.error('Supabase direct fetch error:', err);
       }
+    }
+
+    function getCropCategory(raw) {
+      if (!raw) return 'Others';
+      if (raw.startsWith('High Value Crops')) return 'High Value Crops';
+      return raw;
     }
 
     function render() {
       const filtered = allFarms.filter(f => {
-        const brgyMatch = selectedBrgy === 'ALL' || (f.barangay || '').toLowerCase() === selectedBrgy.toLowerCase();
-        const cropMatch = selectedCrop === 'ALL' || (f.cropType || 'Others') === selectedCrop;
+        const b = (f.baranggay || f.barangay || '').toLowerCase();
+        const brgyMatch = selectedBrgy === 'ALL' || b === selectedBrgy.toLowerCase();
+        const cCat = getCropCategory(f.cropType);
+        const cropMatch = selectedCrop === 'ALL' || cCat === selectedCrop || (f.cropType || 'Others') === selectedCrop;
         return brgyMatch && cropMatch;
       });
 
@@ -494,13 +919,23 @@
       document.getElementById('statFarmers').innerText = filtered.length;
       document.getElementById('statArea').innerText = (totalArea / 10000).toFixed(2);
 
-      // Crop Statistics
+      // Commodity Statistics Table with Expandable Farmers List (Consolidated based on selected Baranggay)
+      const brgyFarms = allFarms.filter(f => {
+        const b = (f.baranggay || f.barangay || '').toLowerCase();
+        return selectedBrgy === 'ALL' || b === selectedBrgy.toLowerCase();
+      });
+
       const cropStats = {};
-      filtered.forEach(f => {
-        const c = f.cropType || 'Others';
-        if (!cropStats[c]) cropStats[c] = { count: 0, area: 0 };
+      const cropFarmers = {};
+      brgyFarms.forEach(f => {
+        const c = getCropCategory(f.cropType);
+        if (!cropStats[c]) {
+          cropStats[c] = { count: 0, area: 0 };
+          cropFarmers[c] = [];
+        }
         cropStats[c].count++;
         cropStats[c].area += (f.area || 0);
+        cropFarmers[c].push(f);
       });
 
       const cropBody = document.getElementById('cropBody');
@@ -508,62 +943,143 @@
         cropBody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#888;">Walay data pa.</td></tr>';
       } else {
         cropBody.innerHTML = Object.keys(cropStats).map(c => {
-          const meta = CROP_METADATA[c] || { fill: '#DDD', stroke: '#666', label: c };
-          return `
-            <tr>
+          const meta = CROP_METADATA[c] || { fill: '#CFD8DC', stroke: '#546E7A', label: c };
+          const isExpanded = (expandedCrop === c);
+          const farmers = cropFarmers[c] || [];
+
+          let rowHtml = `
+            <tr class="crop-tr ${isExpanded ? 'active-crop' : ''}" onclick="toggleCropExpand('${c}')" title="Pindota aron makita ang mga mag-uuma sa ${meta.label || c}">
               <td>
-                <span style="display:inline-block; width:10px; height:10px; background:${meta.fill}; border:1.5px solid ${meta.stroke}; border-radius:2px; margin-right:6px;"></span>
+                <span style="display:inline-block; width:10px; height:10px; background:${meta.fill}; border:1.5px solid ${meta.stroke}; border-radius:2px; margin-right:6px; vertical-align:middle;"></span>
                 <b>${meta.label || c}</b>
+                <span style="font-size:9.5px; color:#666; margin-left:4px;">${isExpanded ? '▲' : '▼'}</span>
               </td>
               <td style="text-align:center;">${cropStats[c].count}</td>
               <td style="text-align:right; font-weight:bold; color:#1B5E20;">${(cropStats[c].area / 10000).toFixed(2)}</td>
             </tr>
           `;
+
+          if (isExpanded) {
+            rowHtml += `
+              <tr class="farmers-subrow">
+                <td colspan="3">
+                  <div class="farmers-sublist">
+                    <div style="font-size:10px; color:#555; font-weight:bold; margin-bottom:2px; display:flex; justify-content:space-between;">
+                      <span>MGA MAG-UUMA SA ${meta.label || c}:</span>
+                      <span style="color:#1B5E20;">(${farmers.length} farm parcels)</span>
+                    </div>
+                    ${farmers.map(farm => {
+                      const subCrop = farm.hvcCrop || (farm.cropType && farm.cropType.includes(':') ? farm.cropType.split(':')[1].trim() : '');
+                      const fBrgy = farm.baranggay || farm.barangay || '';
+                      return `
+                      <div class="farmer-item" onclick="event.stopPropagation(); openFarmerModal('${farm.id}')" title="Pindota aron makita ang kumpletong field details ni ${farm.farmerName}">
+                        <div>
+                          <div class="farmer-item-name">👨‍🌾 ${farm.farmerName} ${subCrop ? `<span style="font-size:10px; color:#00695C; font-weight:bold; background:#E0F2F1; border:1px solid #B2DFDB; padding:1px 6px; border-radius:4px; margin-left:4px;">🌱 ${subCrop}</span>` : ''}</div>
+                          <div class="farmer-item-loc">📍 Brgy. ${fBrgy}${farm.address ? ' • ' + farm.address : ''}</div>
+                        </div>
+                        <div style="text-align:right;">
+                          <div class="farmer-item-area">${((farm.area || 0) / 10000).toFixed(2)} ha</div>
+                          <div style="font-size:9.5px; color:#0288D1; font-weight:bold;">Details ➔</div>
+                        </div>
+                      </div>
+                      `;
+                    }).join('')}
+                  </div>
+                </td>
+              </tr>
+            `;
+          }
+
+          return rowHtml;
         }).join('');
       }
 
-      // Live Stream of Recent Intake
+      // Live Stream of Recent Intake (Allocated cleanly to 5 most recent to avoid visual clutter)
       const stream = document.getElementById('liveStream');
-      const recent = [...filtered].reverse().slice(0, 10);
-      stream.innerHTML = recent.length === 0 ? '<div style="color:#888;">No recent records.</div>' : recent.map(f => `
-        <div style="background:#FFF; border:1px solid #E0E0E0; border-radius:6px; padding:7px 10px; display:flex; justify-content:space-between; align-items:center;">
-          <div>
-            <b>${f.farmerName}</b> <span style="color:#666; font-size:11px;">(Brgy. ${f.barangay})</span><br/>
-            <span style="color:#1B5E20; font-weight:600;">${f.cropType}</span> • ${((f.area||0)/10000).toFixed(2)} ha
+      const recent = [...filtered].reverse().slice(0, 5);
+      stream.innerHTML = recent.length === 0 ? '<div style="color:#888;">No recent records.</div>' : recent.map(f => {
+        const cCat = getCropCategory(f.cropType);
+        const meta = CROP_METADATA[cCat] || CROP_METADATA[f.cropType] || { stroke: '#1B5E20' };
+        const fBrgy = f.baranggay || f.barangay || '';
+        const subCrop = f.hvcCrop || (f.cropType && f.cropType.includes(':') ? f.cropType.split(':')[1].trim() : '');
+        return `
+          <div class="live-stream-item" onclick="openFarmerModal('${f.id}')" style="background:#FFF; border:1px solid #E0E0E0; border-left:4px solid ${meta.stroke}; border-radius:6px; padding:7px 10px; display:flex; justify-content:space-between; align-items:center;" title="Pindota aron makita ang field details">
+            <div>
+              <b>${f.farmerName}</b> <span style="color:#666; font-size:11px;">(Brgy. ${fBrgy})</span><br/>
+              <span style="color:${meta.stroke}; font-weight:700;">${subCrop ? subCrop : (meta.label || f.cropType)}</span> • ${((f.area||0)/10000).toFixed(2)} ha
+            </div>
+            <div style="text-align:right;">
+              <span style="font-size:10px; color:#888;">${f.syncedAt ? new Date(f.syncedAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Recent'}</span>
+              <div style="font-size:9.5px; color:#0288D1; font-weight:bold; margin-top:2px;">Details ➔</div>
+            </div>
           </div>
-          <span style="font-size:10px; color:#888;">${f.syncedAt ? new Date(f.syncedAt).toLocaleTimeString() : 'Recent'}</span>
-        </div>
-      `).join('');
+        `;
+      }).join('');
 
       // Render Polygons on Map
       polygonLayers.forEach(l => map.removeLayer(l));
       polygonLayers = [];
       const bounds = [];
 
+      // Determine Shading Mode
+      const isAllSelected = (selectedBrgy === 'ALL' && selectedCrop === 'ALL');
+      const shouldShade = !isAllSelected || shadeAllFilter;
+
       filtered.forEach(f => {
-        if (f.points && f.points.length >= 3) {
-          const latlngs = f.points.map(p => [p.latitude, p.longitude]);
-          const meta = CROP_METADATA[f.cropType] || { fill: '#E1BEE7', stroke: '#7B1FA2' };
+        const latlngs = getFarmPoints(f);
+        if (latlngs.length >= 3) {
+          const cCat = getCropCategory(f.cropType);
+          const meta = CROP_METADATA[cCat] || CROP_METADATA[f.cropType] || { fill: '#CFD8DC', stroke: '#546E7A', label: f.cropType || 'Others' };
+          const fBrgy = f.baranggay || f.barangay || '';
+          const subCrop = f.hvcCrop || (f.cropType && f.cropType.includes(':') ? f.cropType.split(':')[1].trim() : '');
+
           const poly = L.polygon(latlngs, {
             color: meta.stroke,
+            weight: shouldShade ? 2.5 : 1.5,
+            opacity: shouldShade ? 0.9 : 0.45,
+            dashArray: shouldShade ? null : '4, 4',
             fillColor: meta.fill,
-            fillOpacity: 0.65,
-            weight: 2
+            fillOpacity: shouldShade ? 0.40 : 0.04
           }).addTo(map);
 
+          // Tooltip on Hover / Tap
+          poly.bindTooltip(`
+            <div style="font-size:12px; font-weight:600; line-height:1.35;">
+              <b>${f.farmerName}</b><br/>
+              📍 Brgy. ${fBrgy}${f.address ? ' (' + f.address + ')' : ''}<br/>
+              <span style="color:${meta.stroke};">🌾 <b>${meta.label || f.cropType}</b></span>${subCrop ? ' (' + subCrop + ')' : ''}: ${((f.area || 0) / 10000).toFixed(2)} ha
+            </div>
+          `, { sticky: true, className: 'farm-map-tooltip' });
+
+          // Rich Popup on Click with Full Details Gateway
           poly.bindPopup(`
-            <b>${f.farmerName}</b><br/>
-            📍 Brgy. ${f.barangay} ${f.address ? '(' + f.address + ')' : ''}<br/>
-            🌾 <b>${f.cropType}</b>: ${((f.area||0)/10000).toFixed(2)} ha
+            <div style="font-size:12.5px; min-width:220px; line-height:1.5;">
+              <h4 style="color:#1B5E20; margin-bottom:5px; font-size:14px; border-bottom:1.5px solid #C8E6C9; padding-bottom:4px;">
+                ${f.cropType === 'Pineapple' ? '🍍' : '👨‍🌾'} ${f.farmerName}
+              </h4>
+              <div><b>Baranggay:</b> Brgy. ${fBrgy}</div>
+              ${f.address ? `<div><b>Sitio / Block:</b> ${f.address}</div>` : ''}
+              <div><b>Commodity:</b> <span style="background:${meta.fill}; padding:2px 7px; border-radius:4px; font-weight:bold; border:1px solid ${meta.stroke};">${meta.label || f.cropType}</span> ${subCrop ? `<span style="font-weight:bold; color:#00695C; font-size:11.5px;">• ${subCrop}</span>` : ''}</div>
+              <div><b>Total Land Area:</b> <b style="color:#1B5E20;">${((f.area || 0) / 10000).toFixed(2)} ha</b> (${Math.round(f.area || 0).toLocaleString()} m²)</div>
+              <button onclick="openFarmerModal('${f.id}')" style="margin-top:8px; width:100%; background:#1B5E20; color:#FFF; border:none; padding:7px; border-radius:6px; font-weight:bold; font-size:11.5px; cursor:pointer;">
+                📄 Tan-awa ang Tanan Field Details ➔
+              </button>
+            </div>
           `);
 
+          poly.farmId = f.id;
           polygonLayers.push(poly);
           latlngs.forEach(ll => bounds.push(ll));
         }
       });
 
-      if (bounds.length > 0 && selectedBrgy !== 'ALL') {
-        map.fitBounds(L.latLngBounds(bounds), { padding: [30, 30] });
+      // Smooth Auto-Fit bounds to filtered items
+      if (bounds.length > 0 && !isAllSelected) {
+        map.fitBounds(L.latLngBounds(bounds), { padding: [45, 45], maxZoom: 18 });
+      } else if (selectedBrgy !== 'ALL' && brgyBoundaryLayer) {
+        map.fitBounds(brgyBoundaryLayer.getBounds(), { padding: [40, 40], maxZoom: 15 });
+      } else if (isAllSelected && !bounds.length) {
+        map.setView([8.3333, 124.7433], 12);
       }
     }
 
@@ -579,6 +1095,12 @@
       document.getElementById('settingsModal').style.display = 'none';
     }
 
+    function toggleAllShading(checked) {
+      shadeAllFilter = checked;
+      localStorage.setItem('libona_shade_all_filter', checked ? 'true' : 'false');
+      render();
+    }
+
     function toggleMunicipalBorder(show) {
       if (!libonaMunicipalLayer) return;
       if (show) map.addLayer(libonaMunicipalLayer);
@@ -590,41 +1112,480 @@
       if (show) map.addLayer(allBrgyPolygonsLayer);
       else map.removeLayer(allBrgyPolygonsLayer);
     }
+
+    // ── Farmer Field Dossier Modal Functions & Multi-Parcel Search ──
+    let currentModalParcels = [];
+    let currentModalFarmerName = '';
+
+    function handleFarmerSearch(query) {
+      const q = (query || '').trim().toLowerCase();
+      const drop = document.getElementById('searchDropdown');
+      const clearBtn = document.getElementById('clearSearchBtn');
+
+      if (!q) {
+        drop.style.display = 'none';
+        clearBtn.style.display = 'none';
+        return;
+      }
+      clearBtn.style.display = 'block';
+
+      // Group all farms by farmer name
+      const farmerMap = {};
+      allFarms.forEach(f => {
+        const name = (f.farmerName || '').trim();
+        if (!name) return;
+        const key = name.toLowerCase();
+        if (key.includes(q)) {
+          if (!farmerMap[key]) {
+            farmerMap[key] = {
+              name: name,
+              parcels: [],
+              totalArea: 0,
+              baranggays: new Set(),
+              crops: new Set()
+            };
+          }
+          farmerMap[key].parcels.push(f);
+          farmerMap[key].totalArea += (Number(f.area) || 0);
+          const b = f.baranggay || f.barangay;
+          if (b) farmerMap[key].baranggays.add(b);
+          if (f.cropType) farmerMap[key].crops.add(f.cropType);
+        }
+      });
+
+      const keys = Object.keys(farmerMap);
+      if (keys.length === 0) {
+        drop.innerHTML = '<div style="padding:8px; color:#888; font-size:11.5px; text-align:center;">Walay nakit-an nga mag-uuma.</div>';
+        drop.style.display = 'block';
+        return;
+      }
+
+      drop.innerHTML = keys.slice(0, 8).map(k => {
+        const item = farmerMap[k];
+        const brgyList = Array.from(item.baranggays).join(', ') || 'Libona';
+        const areaHa = (item.totalArea / 10000).toFixed(2);
+        return `
+          <div onclick="openFarmerModal('${item.name.replace(/'/g, "\\'")}', true); clearFarmerSearch();" style="padding:6px 8px; border-bottom:1px solid #EEE; cursor:pointer; font-size:11.5px;" onmouseover="this.style.background='#E8F5E9'" onmouseout="this.style.background='transparent'">
+            <div style="font-weight:bold; color:#1B5E20;">👨‍🌾 ${item.name}</div>
+            <div style="color:#666; font-size:10.5px; display:flex; justify-content:space-between; margin-top:2px;">
+              <span>📍 ${brgyList}</span>
+              <span style="font-weight:bold; color:#2E7D32;">${item.parcels.length} parcel${item.parcels.length > 1 ? 's' : ''} (${areaHa} ha)</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+      drop.style.display = 'block';
+    }
+
+    function clearFarmerSearch() {
+      const input = document.getElementById('farmerSearchInput');
+      if (input) input.value = '';
+      const drop = document.getElementById('searchDropdown');
+      if (drop) drop.style.display = 'none';
+      const clearBtn = document.getElementById('clearSearchBtn');
+      if (clearBtn) clearBtn.style.display = 'none';
+    }
+
+    function toggleCropExpand(c) {
+      if (expandedCrop === c) {
+        expandedCrop = null;
+        setCrop('ALL');
+      } else {
+        expandedCrop = c;
+        setCrop(c);
+      }
+    }
+
+    function openFarmerModal(target, forceShowAll = false) {
+      let targetName = '';
+      let targetFarm = allFarms.find(f => String(f.id) === String(target));
+      if (targetFarm) {
+        targetName = targetFarm.farmerName;
+      } else {
+        targetName = target;
+      }
+      if (!targetName) return;
+
+      currentModalFarmerName = targetName;
+
+      // Find all parcels belonging to this farmer across entire Libona
+      const allParcels = allFarms.filter(f => (f.farmerName || '').trim().toLowerCase() === targetName.trim().toLowerCase());
+      if (allParcels.length === 0) return;
+
+      // Scope check: If Baranggay is filtered and not forced to show all
+      let activeParcels = allParcels;
+      let isScoped = false;
+      if (selectedBrgy !== 'ALL' && !forceShowAll) {
+        const scoped = allParcels.filter(f => (f.baranggay || f.barangay || '').toLowerCase() === selectedBrgy.toLowerCase());
+        if (scoped.length > 0) {
+          activeParcels = scoped;
+          isScoped = (allParcels.length > scoped.length);
+        }
+      }
+
+      currentModalParcels = activeParcels;
+      currentModalFarm = activeParcels[0];
+
+      document.getElementById('fModalName').innerText = targetName;
+      document.getElementById('fModalSub').innerText = isScoped
+        ? `Brgy. ${selectedBrgy} Parcels Scope • LGU Libona`
+        : `Consolidated Master Dossier (${activeParcels.length} Parcels across Libona)`;
+
+      const totalArea = activeParcels.reduce((acc, p) => acc + (Number(p.area) || 0), 0);
+      const totalAreaHa = (totalArea / 10000).toFixed(2);
+      const totalAreaSqm = Math.round(totalArea).toLocaleString('en-US');
+      document.getElementById('fModalArea').innerText = `${totalAreaHa} ha (${totalAreaSqm} m²)`;
+
+      document.getElementById('fModalParcelCount').innerText = `${activeParcels.length} Parcel${activeParcels.length > 1 ? 's' : ''}`;
+
+      const brgySet = new Set(activeParcels.map(p => p.baranggay || p.barangay || 'Libona'));
+      document.getElementById('fModalLoc').innerText = Array.from(brgySet).join(', ');
+
+      const cropSet = new Set(activeParcels.map(p => {
+        const cCat = getCropCategory(p.cropType);
+        return CROP_METADATA[cCat]?.label || cCat;
+      }));
+      document.getElementById('fModalCropBadge').innerText = Array.from(cropSet).join(', ') || 'Mixed Crops';
+
+      // Single vs Multi Parcels View
+      const singleView = document.getElementById('fModalSingleView');
+      const multiView = document.getElementById('fModalMultiView');
+
+      if (activeParcels.length === 1 && !isScoped) {
+        singleView.style.display = 'flex';
+        multiView.style.display = 'none';
+
+        const p = activeParcels[0];
+        const pts = getFarmPoints(p);
+        if (p.centerCoordinates && (p.centerCoordinates.latitude || p.centerCoordinates.lat)) {
+          const cLat = Number(p.centerCoordinates.latitude || p.centerCoordinates.lat).toFixed(6);
+          const cLng = Number(p.centerCoordinates.longitude || p.centerCoordinates.lng).toFixed(6);
+          document.getElementById('fModalCoords').innerText = `Lat: ${cLat}, Lng: ${cLng}`;
+        } else if (pts.length > 0) {
+          document.getElementById('fModalCoords').innerText = `Lat: ${pts[0][0].toFixed(6)}, Lng: ${pts[0][1].toFixed(6)}`;
+        } else {
+          document.getElementById('fModalCoords').innerText = 'No GPS coordinates recorded';
+        }
+
+        document.getElementById('fModalNotes').innerText = p.notes || 'Walay gisulat nga remarks.';
+      } else {
+        singleView.style.display = 'none';
+        multiView.style.display = 'block';
+
+        const notice = document.getElementById('fModalScopeNotice');
+        if (isScoped) {
+          notice.innerHTML = `<span style="color:#E65100;">Scope: Brgy. ${selectedBrgy} ra</span> • <a href="javascript:void(0)" onclick="openFarmerModal('${targetName.replace(/'/g, "\\'")}', true)" style="color:#0288D1; font-weight:bold; text-decoration:underline;">Ipakita Tanan (${allParcels.length} parcels sa Libona)</a>`;
+        } else {
+          notice.innerText = `Tanang ${activeParcels.length} ka parcels narehistro ubos ni ${targetName}`;
+        }
+
+        const listContainer = document.getElementById('fModalParcelsList');
+        listContainer.innerHTML = activeParcels.map((p, idx) => {
+          const cCat = getCropCategory(p.cropType);
+          const meta = CROP_METADATA[cCat] || CROP_METADATA[p.cropType] || { fill: '#CFD8DC', stroke: '#546E7A' };
+          const subCrop = p.hvcCrop || (p.cropType && p.cropType.includes(':') ? p.cropType.split(':')[1].trim() : '');
+          const pAreaHa = ((Number(p.area) || 0) / 10000).toFixed(2);
+          const pAreaSqm = Math.round(Number(p.area) || 0).toLocaleString();
+          const fBrgy = p.baranggay || p.barangay || 'Libona';
+          const center = p.centerCoordinates || p.centerCoords || {};
+          const cLat = center.latitude ? Number(center.latitude).toFixed(6) : (p.points && p.points[0] ? Number(p.points[0].latitude).toFixed(6) : '—');
+          const cLng = center.longitude ? Number(center.longitude).toFixed(6) : (p.points && p.points[0] ? Number(p.points[0].longitude).toFixed(6) : '—');
+
+          return `
+            <div style="background:#FFF; border:1px solid #E0E0E0; border-left:4px solid ${meta.stroke}; border-radius:8px; padding:9px 11px;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                  <b style="color:#1B5E20; font-size:12px;">Parcel #${idx + 1}: Brgy. ${fBrgy}${p.address ? ' • ' + p.address : ''}</b>
+                  <div style="margin-top:2px;">
+                    <span style="background:${meta.fill}; border:1px solid ${meta.stroke}; padding:1px 6px; border-radius:4px; font-size:11px; font-weight:bold;">${meta.label || p.cropType}</span>
+                    ${subCrop ? `<span style="font-size:10.5px; color:#00695C; font-weight:bold; margin-left:4px;">🌱 ${subCrop}</span>` : ''}
+                  </div>
+                </div>
+                <div style="text-align:right;">
+                  <b style="color:#1B5E20; font-size:13px;">${pAreaHa} ha</b>
+                  <div style="font-size:9.5px; color:#888;">(${pAreaSqm} m²)</div>
+                </div>
+              </div>
+              <div style="margin-top:4px; font-size:10.5px; color:#555; font-family:monospace;">
+                📍 Coordinates: Lat ${cLat}, Lng ${cLng}
+              </div>
+              ${p.notes ? `
+                <div style="margin-top:4px; background:#F5F5F5; border-radius:4px; padding:4px 7px; font-size:11px; color:#333;">
+                  <b>Agri-Tech's Notes:</b> ${p.notes}
+                </div>
+              ` : ''}
+              <div style="margin-top:5px; text-align:right;">
+                <button onclick="panToSpecificParcel('${p.id}')" style="background:#2E7D32; color:#FFF; border:none; padding:4px 9px; border-radius:5px; font-size:10.5px; font-weight:bold; cursor:pointer;">
+                  🗺️ Focus on Map ➔
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      document.getElementById('fModalSource').innerText = `Source: ${activeParcels[0].source || 'Android Field App'}`;
+      document.getElementById('fModalSyncTime').innerText = activeParcels[0].syncedAt ? `Synced: ${new Date(activeParcels[0].syncedAt).toLocaleString()}` : 'Synced: Local record';
+
+      document.getElementById('farmerModal').style.display = 'flex';
+    }
+
+    function closeFarmerModal() {
+      document.getElementById('farmerModal').style.display = 'none';
+      currentModalFarm = null;
+    }
+
+    function panToFarmerFromModal() {
+      if (!currentModalFarm) return;
+      panToSpecificParcel(currentModalFarm.id);
+    }
+
+    function panToSpecificParcel(parcelId) {
+      const p = allFarms.find(item => String(item.id) === String(parcelId));
+      if (!p) return;
+      closeFarmerModal();
+
+      const pts = getFarmPoints(p);
+      if (pts.length > 0) {
+        map.fitBounds(L.latLngBounds(pts), { padding: [60, 60], maxZoom: 19 });
+        setTimeout(() => {
+          const targetPoly = polygonLayers.find(l => String(l.farmId) === String(p.id));
+          if (targetPoly) targetPoly.openPopup();
+        }, 350);
+      } else if (p.centerCoordinates) {
+        const cLat = p.centerCoordinates.latitude || p.centerCoordinates.lat;
+        const cLng = p.centerCoordinates.longitude || p.centerCoordinates.lng;
+        if (cLat && cLng) map.setView([cLat, cLng], 18);
+      }
+    }
+
+    function panToAllFarmerParcels() {
+      if (!currentModalParcels || currentModalParcels.length === 0) return;
+      closeFarmerModal();
+
+      const allBounds = [];
+      currentModalParcels.forEach(p => {
+        const pts = getFarmPoints(p);
+        pts.forEach(pt => allBounds.push(pt));
+      });
+
+      if (allBounds.length > 0) {
+        map.fitBounds(L.latLngBounds(allBounds), { padding: [55, 55], maxZoom: 18 });
+        setTimeout(() => {
+          const firstPoly = polygonLayers.find(l => String(l.farmId) === String(currentModalParcels[0].id));
+          if (firstPoly) firstPoly.openPopup();
+        }, 350);
+      }
+    }
+
+    function printFarmerCertificate() {
+      window.print();
+    }
+
+    // ── Corporate Pineapple Plantation Modal & Tagging Tool ──
+    function openCorporateModal() {
+      document.getElementById('corpModal').style.display = 'flex';
+    }
+    function closeCorporateModal() {
+      document.getElementById('corpModal').style.display = 'none';
+    }
+
+    // Spherical polygon area calculation in sq. meters
+    function calcAreaSqMeters(coords) {
+      if (!coords || coords.length < 3) return 0;
+      const radius = 6378137;
+      let area = 0;
+      for (let i = 0; i < coords.length; i++) {
+        const j = (i + 1) % coords.length;
+        const p1 = coords[i];
+        const p2 = coords[j];
+        const lat1 = (p1[0] * Math.PI) / 180;
+        const lat2 = (p2[0] * Math.PI) / 180;
+        const lon1 = (p1[1] * Math.PI) / 180;
+        const lon2 = (p2[1] * Math.PI) / 180;
+        area += (lon2 - lon1) * (2 + Math.sin(lat1) + Math.sin(lat2));
+      }
+      return Math.abs((area * radius * radius) / 2);
+    }
+
+    function startDrawingMode() {
+      closeCorporateModal();
+      isDrawingCorp = true;
+      drawnCoords = [];
+      clearDrawnMarkers();
+      document.getElementById('drawBanner').style.display = 'flex';
+      document.getElementById('drawPointCount').innerText = '0';
+
+      // Focus map to Libona if needed
+      if (map.getZoom() < 13) map.setZoom(14);
+    }
+
+    function clearDrawnMarkers() {
+      drawnMarkers.forEach(m => map.removeLayer(m));
+      drawnMarkers = [];
+      if (drawnPolyLayer) {
+        map.removeLayer(drawnPolyLayer);
+        drawnPolyLayer = null;
+      }
+    }
+
+    function clearDrawnPoints() {
+      drawnCoords = [];
+      clearDrawnMarkers();
+      document.getElementById('drawPointCount').innerText = '0';
+    }
+
+    function cancelDrawingMode() {
+      isDrawingCorp = false;
+      clearDrawnPoints();
+      document.getElementById('drawBanner').style.display = 'none';
+      openCorporateModal();
+    }
+
+    function finishDrawnPoints() {
+      if (drawnCoords.length < 3) {
+        alert('Palihog pag-click ug labing menus 3 ka puntos sa mapa aron maporma ang corporate polygon boundary.');
+        return;
+      }
+      isDrawingCorp = false;
+      document.getElementById('drawBanner').style.display = 'none';
+
+      // Calculate area
+      const sqMeters = calcAreaSqMeters(drawnCoords);
+      const ha = (sqMeters / 10000).toFixed(2);
+      document.getElementById('corpAreaHa').value = ha;
+      document.getElementById('corpPointsStatus').innerText = `✓ ${drawnCoords.length} boundary points captured (${ha} ha)`;
+
+      openCorporateModal();
+    }
+
+    // Map click handler for drawing corporate polygon
+    map.on('click', function(e) {
+      if (!isDrawingCorp) return;
+      const pt = [e.latlng.lat, e.latlng.lng];
+      drawnCoords.push(pt);
+      document.getElementById('drawPointCount').innerText = drawnCoords.length;
+
+      // Add dot marker
+      const marker = L.circleMarker(pt, {
+        radius: 5,
+        color: '#E65100',
+        fillColor: '#FFD54F',
+        fillOpacity: 1,
+        weight: 2
+      }).addTo(map);
+      drawnMarkers.push(marker);
+
+      // Re-draw preview polygon
+      if (drawnCoords.length >= 2) {
+        if (drawnPolyLayer) map.removeLayer(drawnPolyLayer);
+        drawnPolyLayer = L.polygon(drawnCoords, {
+          color: '#E65100',
+          fillColor: '#FFE082',
+          fillOpacity: 0.45,
+          weight: 2.5
+        }).addTo(map);
+      }
+    });
+
+    async function submitCorporatePineapple() {
+      const company = document.getElementById('corpCompany').value;
+      const barangay = document.getElementById('corpBarangay').value;
+      const block = document.getElementById('corpBlock').value.trim() || 'Pineapple Plantation';
+      let areaHa = parseFloat(document.getElementById('corpAreaHa').value);
+      const notes = document.getElementById('corpNotes').value.trim();
+
+      let pts = [...drawnCoords];
+
+      // If user pasted manual coords
+      const manualText = document.getElementById('corpCoordsText').value.trim();
+      if (manualText && pts.length < 3) {
+        try {
+          if (manualText.startsWith('[') || manualText.startsWith('{')) {
+            const parsed = JSON.parse(manualText);
+            pts = Array.isArray(parsed) ? parsed : (parsed.coordinates ? parsed.coordinates[0] : []);
+          } else {
+            pts = manualText.split('\n').map(l => {
+              const parts = l.split(/[\s,]+/).filter(Boolean);
+              return parts.length >= 2 ? [parseFloat(parts[0]), parseFloat(parts[1])] : null;
+            }).filter(Boolean);
+          }
+        } catch (e) {
+          console.error('Coord parse error:', e);
+        }
+      }
+
+      if (pts.length < 3) {
+        alert('Palihog pag-drawing o pag-input ug labing menus 3 ka coordinates alang sa boundary sa Pineapple plantation.');
+        return;
+      }
+
+      const sqMeters = calcAreaSqMeters(pts);
+      if (!areaHa || isNaN(areaHa) || areaHa <= 0) {
+        areaHa = parseFloat((sqMeters / 10000).toFixed(2));
+      }
+
+      // Calculate centroid
+      let sumLat = 0, sumLng = 0;
+      pts.forEach(p => { sumLat += p[0]; sumLng += p[1]; });
+      const center = { latitude: sumLat / pts.length, longitude: sumLng / pts.length };
+
+      const formattedPolygon = pts.map(p => ({ latitude: p[0], longitude: p[1] }));
+
+      const payload = {
+        id: 'corp-pineapple-' + Date.now(),
+        farmerName: `${company} (${block})`,
+        barangay: barangay,
+        address: block,
+        cropType: 'Pineapple',
+        area: sqMeters,
+        centerCoordinates: center,
+        polygonCoordinates: formattedPolygon,
+        notes: notes || 'Corporate Pineapple Plantation',
+        source: 'Server Admin (Corporate)',
+        syncedAt: new Date().toISOString()
+      };
+
+      try {
+        // 1. Save to Supabase Cloud Master
+        await fetch('https://cjygsethbhnjaewzdefv.supabase.co/rest/v1/farms', {
+          method: 'POST',
+          headers: {
+            'apikey': 'sb_publishable_-6L7EsFK9muCMfdC80Tr1w_Mou9nUGs',
+            'Authorization': 'Bearer sb_publishable_-6L7EsFK9muCMfdC80Tr1w_Mou9nUGs',
+            'Content-Type': 'application/json',
+            'Prefer': 'resolution=merge-duplicates'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        // 2. Save to Local Server API
+        await fetch('/api/farms', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        alert(`✅ Malampusong na-save ang Corporate Pineapple Plantation alang sa ${company} sa Brgy. ${barangay} (${areaHa} ha)!`);
+        
+        // Reset form & state
+        clearDrawnMarkers();
+        drawnCoords = [];
+        document.getElementById('corpBlock').value = '';
+        document.getElementById('corpAreaHa').value = '';
+        document.getElementById('corpCoordsText').value = '';
+        document.getElementById('corpNotes').value = '';
+        document.getElementById('corpPointsStatus').innerText = 'No boundary points attached yet.';
+        closeCorporateModal();
+
+        // Refresh Data and focus on Pineapple
+        await loadData();
+        setCrop('Pineapple');
+      } catch (err) {
+        console.error('Error saving corporate farm:', err);
+        alert('Naay problema sa pag-save: ' + err.message);
+      }
+    }
   </script>
-
-  <!-- Settings Gear Modal -->
-  <div class="modal-overlay" id="settingsModal" onclick="if(event.target===this)closeSettings()">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h2>⚙️ Map & Boundary Settings</h2>
-        <button class="btn-close-modal" onclick="closeSettings()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <!-- Toggle 1: Barangay Polygon Boundaries -->
-        <div class="setting-toggle-row">
-          <div class="setting-info">
-            <h4>Barangay Boundaries (Polygons)</h4>
-            <p>Ipakita o itago ang colored polygon borders sa 14 ka barangay</p>
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="toggleBrgyBoundaries" checked onchange="toggleBarangayPolygons(this.checked)">
-            <span class="slider"></span>
-          </label>
-        </div>
-
-        <!-- Toggle 2: Municipal Outer Boundary -->
-        <div class="setting-toggle-row">
-          <div class="setting-info">
-            <h4>Libona Municipal Border Line</h4>
-            <p>Ipakita o itago ang puti/berde nga outer border sa tibuok Libona</p>
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="toggleMunicipalBorder" checked onchange="toggleMunicipalBorder(this.checked)">
-            <span class="slider"></span>
-          </label>
-        </div>
-      </div>
-    </div>
-  </div>
 </body>
 </html>
