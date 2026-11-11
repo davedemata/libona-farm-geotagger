@@ -6,6 +6,7 @@
   <title>🏢 LGU Libona - Office Consolidated Live Dashboard</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/libona_boundaries.js"></script>
   <style>
     :root {
       --primary: #1B5E20;
@@ -22,31 +23,101 @@
     
     /* Top Header */
     header {
-      background: var(--primary);
+      background: linear-gradient(135deg, #0D3810 0%, #1B5E20 55%, #2E7D32 100%);
       color: white;
-      padding: 10px 22px;
+      padding: 8px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      flex-wrap: wrap;
+      gap: 10px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.22);
+      border-bottom: 2.5px solid #FFD54F;
       z-index: 1000;
+      flex-shrink: 0;
     }
-    .header-title h1 { font-size: 19px; font-weight: 800; letter-spacing: 0.4px; }
-    .header-title p { font-size: 12px; color: #C8E6C9; margin-top: 2px; }
+    .header-branding {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 260px;
+      flex: 1;
+    }
+    .header-logo-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      padding: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      border: 1.5px solid #FFD54F;
+      flex-shrink: 0;
+    }
+    .header-logo-badge img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      border-radius: 50%;
+    }
+    .header-title h1 {
+      font-size: 15.5px;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+      color: #FFFFFF;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      line-height: 1.25;
+    }
+    .header-title p {
+      font-size: 11px;
+      color: #C8E6C9;
+      margin-top: 2px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .btn-nav-action {
+      height: 32px;
+      padding: 0 11px;
+      border-radius: 7px;
+      font-size: 11.5px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      border: none;
+      text-decoration: none;
+      color: #FFF;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+      white-space: nowrap;
+    }
+    .btn-nav-action:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.28);
     }
     .live-indicator {
       display: flex;
       align-items: center;
       gap: 6px;
-      background: rgba(255,255,255,0.15);
-      padding: 6px 11px;
+      background: rgba(255,255,255,0.18);
+      padding: 5px 10px;
       border-radius: 20px;
-      font-size: 11.5px;
-      font-weight: 600;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      border: 1px solid rgba(255,255,255,0.3);
     }
     .dot { width: 8px; height: 8px; background: #69F0AE; border-radius: 50%; box-shadow: 0 0 8px #69F0AE; animation: pulse 2s infinite; }
     @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
@@ -102,7 +173,11 @@
     .main-container {
       display: flex;
       flex: 1;
-      height: calc(100vh - 65px);
+      height: auto;
+      min-height: 0;
+      overflow: hidden;
+      position: relative;
+    }
       overflow: hidden;
       position: relative;
     }
@@ -130,20 +205,27 @@
       justify-content: space-between;
       align-items: center;
     }
-    .pills-scroll { display: flex; flex-wrap: wrap; gap: 5px; }
+    .pills-scroll { display: flex; flex-wrap: wrap; gap: 6px; padding: 2px 0; }
     .pill {
-      background: #F0F4F1;
-      border: 1px solid #DCE5DE;
-      padding: 5px 10px;
-      border-radius: 14px;
+      background: #FFFFFF;
+      border: 1.2px solid #CFD8DC;
+      padding: 6px 12px;
+      border-radius: 18px;
       font-size: 11.5px;
       font-weight: 600;
       cursor: pointer;
-      color: #333;
-      transition: all 0.15s;
+      color: #37474F;
+      transition: all 0.18s ease;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
     }
-    .pill:hover { background: #E4ECE5; }
-    .pill.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 2px 4px rgba(27,94,32,0.25); }
+    .pill:hover { background: #ECEFF1; border-color: #B0BEC5; }
+    .pill.active {
+      background: var(--primary);
+      color: #FFFFFF;
+      border-color: #0D3810;
+      box-shadow: 0 2px 6px rgba(27,94,32,0.35);
+      font-weight: 700;
+    }
 
     /* Stats Overview Grid */
     .stats-grid {
@@ -390,11 +472,18 @@
   </div>
 
   <header>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <img src="/logo.png" alt="Libona Agri Logo" style="width:46px;height:46px;object-fit:contain;" />
+    <div class="header-branding">
+      <div class="header-logo-badge" style="width:48px; height:48px; border-radius:50%; background:#FFD54F; display:flex; align-items:center; justify-content:center; overflow:hidden; border:2.5px solid #FFFFFF; box-shadow:0 2px 8px rgba(0,0,0,0.35); flex-shrink:0;">
+        <img src="/logo.png" alt="Libona Agri" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.style.display='none'; document.getElementById('serverFallbackEmblem').style.display='flex';" />
+        <div id="serverFallbackEmblem" style="display:none; width:100%; height:100%; background:linear-gradient(135deg, #1B5E20, #2E7D32); align-items:center; justify-content:center; font-size:24px;">🌾</div>
+      </div>
       <div class="header-title">
         <h1>MUNICIPALITY OF LIBONA — CENTRAL SERVER DASHBOARD</h1>
-        <p>Municipal Agriculture Office • Real-time Field Geotagging Console</p>
+        <p>
+          <span>Municipal Agriculture Office</span> • 
+          <span style="background:rgba(255,255,255,0.22); padding:1px 7px; border-radius:4px; font-weight:700; color:#FFF;">📍 Libona, Bukidnon</span> • 
+          <span>Real-time Field Geotagging Console</span>
+        </p>
       </div>
     </div>
     <div class="header-actions">
@@ -402,10 +491,11 @@
         <span class="dot"></span>
         <span>LIVE INTAKE</span>
       </div>
-      <button class="btn-corporate" onclick="openCorporateModal()">🍍 Tag Corporate Pineapple</button>
-      <button class="btn-print" onclick="window.print()">🖨️ Print</button>
-      <button class="btn-settings" onclick="openSettings()">⚙️ Settings</button>
-      <a href="/admin.html" style="color: #FFF; text-decoration: none; font-size: 12.5px; font-weight: bold; background: rgba(0,0,0,0.25); padding: 7px 12px; border-radius: 8px;">🛠️ Admin</a>
+      <button class="btn-nav-action" style="background:#0D47A1;" onclick="openOverallDirectoryModal()">📋 Overall Directory</button>
+      <button class="btn-nav-action" style="background:#E65100;" onclick="openCorporateModal()">🍍 Corporate Pineapple</button>
+      <button class="btn-nav-action" style="background:#FFFFFF; color:#1B5E20;" onclick="window.print()">🖨️ Print</button>
+      <button class="btn-nav-action" style="background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.35);" onclick="openSettings()">⚙️ Settings</button>
+      <a href="/admin.html" class="btn-nav-action" style="background:rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.25);">🛠️ Admin</a>
     </div>
   </header>
 
@@ -415,7 +505,7 @@
       <!-- Search Farmer Name (Consolidates all parcels across Libona) -->
       <div class="filter-sec" style="margin-bottom: 10px;">
         <div style="position:relative;">
-          <input type="text" id="farmerSearchInput" placeholder="🔍 Pangitaa ang Mag-uuma (Search name)..." 
+          <input type="text" id="farmerSearchInput" placeholder="Pangitaa ang Mag-uuma (Search name)..." 
             oninput="handleFarmerSearch(this.value)"
             style="width: 100%; padding: 8px 12px 8px 30px; border: 1.5px solid #C8E6C9; border-radius: 8px; font-size: 12px; outline: none; background: #FFF;" />
           <span style="position:absolute; left: 9px; top: 8px; font-size: 13px; color: #888;">🔍</span>
@@ -672,6 +762,56 @@
           <button type="button" class="btn-modal-cancel" onclick="closeFarmerModal()">Close</button>
           <button type="button" class="btn-corporate" style="background:#1B5E20;" onclick="panToAllFarmerParcels()">📍 View on Satellite Map</button>
           <button type="button" class="btn-print" style="background:#2E7D32; color:#FFF;" onclick="printFarmerCertificate()">🖨️ Print Profile</button>
+          <button type="button" class="btn-modal-cancel" style="background:#C62828; color:#FFF; font-weight:bold;" onclick="deleteCurrentFarmerFromModal()">🗑️ Delete Farm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overall Farmers Directory Modal (Unsegregated • Surname, First Name A-Z) -->
+  <div class="modal-overlay" id="overallDirectoryModal" onclick="if(event.target===this)closeOverallDirectoryModal()">
+    <div class="modal-card" style="width: 860px; max-width: 96vw; max-height: 90vh;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #0D47A1, #1565C0);">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:26px;">📋</span>
+          <div>
+            <h2 style="font-size:16px; font-weight:bold;">Overall Farmers Directory — Municipality of Libona</h2>
+            <p id="overallDirSub" style="font-size:11.5px; color:#BBDEFB; margin-top:1px;">Tanan nga Rehistradong Mag-uuma • Unsegregated Master Directory (A-Z)</p>
+          </div>
+        </div>
+        <button class="btn-close-modal" onclick="closeOverallDirectoryModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="gap:10px; padding:16px; max-height:75vh; overflow-y:auto;">
+        <!-- Toolbar: Search + Quick stats + Export -->
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
+          <div style="position:relative; flex:1; min-width:240px;">
+            <input type="text" id="overallDirSearch" placeholder="🔍 Pangitaa pinaagi sa Apelyido, Ngalan, o Barangay..." 
+              oninput="filterOverallDirectory(this.value)"
+              style="width:100%; padding:8px 12px; border:1.5px solid #90CAF9; border-radius:8px; font-size:12.5px; outline:none;" />
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn-corporate" style="background:#2E7D32; font-size:11.5px; padding:6px 12px;" onclick="exportOverallDirCSV()">📊 Export CSV</button>
+            <button class="btn-corporate" style="background:#1565C0; font-size:11.5px; padding:6px 12px;" onclick="exportOverallDirJSON()">📥 Backup JSON</button>
+          </div>
+        </div>
+
+        <!-- Directory Table -->
+        <div style="border:1px solid #CFD8DC; border-radius:8px; overflow:hidden;">
+          <table style="width:100%; border-collapse:collapse; font-size:12.5px;">
+            <thead>
+              <tr style="background:#ECEFF1; text-align:left; color:#37474F;">
+                <th style="padding:9px 12px;">Farmer Name (Surname, Name, MI)</th>
+                <th style="padding:9px 12px;">Baranggay</th>
+                <th style="padding:9px 12px;">Commodity / Crop</th>
+                <th style="padding:9px 12px;">Total Area (ha)</th>
+                <th style="padding:9px 12px;">Coordinates</th>
+                <th style="padding:9px 12px; text-align:center;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="overallDirectoryTbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -685,27 +825,27 @@
     ];
     const LIBONA_BARANGAYS = LIBONA_BARANGGAYS;
 
-    // Lightened & distinct commodity colors with Pineapple (Corporate)
+    // High-contrast, vibrant neon commodity colors (Pops out boldly on Satellite imagery)
     const CROP_METADATA = {
-      Corn:               { label: 'Corn (Mais)',                               fill: '#A5D6A7', stroke: '#2E7D32' },
-      Rice:               { label: 'Rice (Humay)',                              fill: '#FFF59D', stroke: '#FBC02D' },
-      Pineapple:          { label: 'Pineapple (Corporate)',                     fill: '#FFE082', stroke: '#E65100', corporate: true },
-      'Banana (Lakatan)': { label: 'Banana (Lakatan)',                          fill: '#FFF9C4', stroke: '#F57F17' },
-      Coffee:             { label: 'Coffee (Kape)',                             fill: '#D7CCC8', stroke: '#5D4037' },
-      Cassava:            { label: 'Cassava (Balanghoy)',                       fill: '#EFEBE9', stroke: '#8D6E63' },
-      Coconut:            { label: 'Coconut (Lubi)',                            fill: '#DCEDC8', stroke: '#558B2F' },
-      'High Value Crops': { label: 'High Value Crops (HVC)',                    fill: '#80DEEA', stroke: '#00838F' },
-      'Fish Pond':        { label: 'Fish Pond',                                 fill: '#81D4FA', stroke: '#0288D1' },
-      MPDP:               { label: 'MPDP (Solar Dryer / Drier)',                fill: '#FFCCBC', stroke: '#D84315' },
-      Mangosteen:         { label: 'Mangosteen',                                fill: '#E1BEE7', stroke: '#7B1FA2' },
-      Others:             { label: 'Others',                                    fill: '#CFD8DC', stroke: '#546E7A' }
+      Corn:               { label: 'Corn (Mais)',                               fill: '#00E676', stroke: '#004D40' },
+      Rice:               { label: 'Rice (Humay)',                              fill: '#FFEA00', stroke: '#E65100' },
+      Pineapple:          { label: 'Pineapple (Corporate)',                     fill: '#FF9100', stroke: '#B71C1C', corporate: true },
+      'Banana (Lakatan)': { label: 'Banana (Lakatan)',                          fill: '#FFFF00', stroke: '#FF6F00' },
+      Coffee:             { label: 'Coffee (Kape)',                             fill: '#FF6D00', stroke: '#3E2723' },
+      Cassava:            { label: 'Cassava (Balanghoy)',                       fill: '#FF3D00', stroke: '#880E4F' },
+      Coconut:            { label: 'Coconut (Lubi)',                            fill: '#00E5FF', stroke: '#006064' },
+      'High Value Crops': { label: 'High Value Crops (HVC)',                    fill: '#FF1744', stroke: '#4A148C' },
+      'Fish Pond':        { label: 'Fish Pond',                                 fill: '#00B0FF', stroke: '#0D47A1' },
+      MPDP:               { label: 'MPDP (Solar Dryer / Drier)',                fill: '#FF9100', stroke: '#DD2C00' },
+      Mangosteen:         { label: 'Mangosteen',                                fill: '#E040FB', stroke: '#4A148C' },
+      Others:             { label: 'Others',                                    fill: '#1DE9B6', stroke: '#004D40' }
     };
 
     let selectedBrgy = 'ALL';
     let selectedCrop = 'ALL';
     let expandedCrop = null;
     let currentModalFarm = null;
-    let shadeAllFilter = (localStorage.getItem('libona_shade_all_filter') === 'true');
+    let shadeAllFilter = (localStorage.getItem('libona_shade_all_filter') !== 'false');
     let allFarms = [];
     let map, polygonLayers = [];
     let brgyBoundaryLayer = null;
@@ -730,27 +870,27 @@
       attribution: 'Google Satellite Hybrid'
     }).addTo(map);
 
-    // Official Libona Municipal Outer Boundary Outline
-    fetch('/libona_full_boundary.geojson')
-      .then(r => r.json())
-      .then(geo => {
-        libonaMunicipalLayer = L.geoJSON(geo, {
+    // Initialize Boundary & Barangay Polygon Layers synchronously (Immune to Vercel static 404s)
+    function initBoundaryLayers() {
+      const muniGeo = window.LIBONA_MUNICIPAL_BOUNDARY_GEOJSON;
+      const brgyGeo = window.LIBONA_BARANGAY_POLYGONS_GEOJSON;
+
+      if (muniGeo && !libonaMunicipalLayer) {
+        libonaMunicipalLayer = L.geoJSON(muniGeo, {
           style: {
             color: '#FFFFFF',
             weight: 3.5,
             dashArray: '8, 6',
             fillColor: 'transparent'
           }
-        }).addTo(map);
-      })
-      .catch(e => console.log('Boundary load:', e));
+        });
+        const showMuni = document.getElementById('toggleMunicipalBorder') ? document.getElementById('toggleMunicipalBorder').checked : true;
+        if (showMuni) libonaMunicipalLayer.addTo(map);
+      }
 
-    // Load Polygon Boundaries for All 14 Barangays
-    fetch('/libona_barangay_polygons.geojson')
-      .then(r => r.json())
-      .then(data => {
-        brgyGeojsonData = data;
-        allBrgyPolygonsLayer = L.geoJSON(data, {
+      if (brgyGeo && !allBrgyPolygonsLayer) {
+        brgyGeojsonData = brgyGeo;
+        allBrgyPolygonsLayer = L.geoJSON(brgyGeo, {
           style: function(feature) {
             return {
               color: '#FFEB3B',
@@ -771,9 +911,35 @@
               if (!isDrawingCorp) setBrgy(bName);
             });
           }
-        }).addTo(map);
-      })
-      .catch(e => console.log('Polygon load:', e));
+        });
+        const showBrgy = document.getElementById('toggleBrgyBoundaries') ? document.getElementById('toggleBrgyBoundaries').checked : true;
+        if (showBrgy) allBrgyPolygonsLayer.addTo(map);
+      }
+    }
+
+    // Try synchronous init first from pre-loaded bundle
+    initBoundaryLayers();
+
+    // Fallback fetch in case script tag took longer or was cached differently
+    if (!libonaMunicipalLayer) {
+      fetch('/libona_full_boundary.geojson')
+        .then(r => r.json())
+        .then(geo => {
+          window.LIBONA_MUNICIPAL_BOUNDARY_GEOJSON = geo;
+          initBoundaryLayers();
+        })
+        .catch(e => console.log('Boundary load fetch fallback:', e));
+    }
+
+    if (!allBrgyPolygonsLayer) {
+      fetch('/libona_barangay_polygons.geojson')
+        .then(r => r.json())
+        .then(data => {
+          window.LIBONA_BARANGAY_POLYGONS_GEOJSON = data;
+          initBoundaryLayers();
+        })
+        .catch(e => console.log('Polygon load fetch fallback:', e));
+    }
 
     // Populate Barangay Buttons
     const pillsContainer = document.getElementById('brgyPills');
@@ -1035,11 +1201,11 @@
 
           const poly = L.polygon(latlngs, {
             color: meta.stroke,
-            weight: shouldShade ? 2.5 : 1.5,
-            opacity: shouldShade ? 0.9 : 0.45,
-            dashArray: shouldShade ? null : '4, 4',
+            weight: 3.5,
+            opacity: 1.0,
+            dashArray: null,
             fillColor: meta.fill,
-            fillOpacity: shouldShade ? 0.40 : 0.04
+            fillOpacity: shouldShade ? 0.72 : 0.45
           }).addTo(map);
 
           // Tooltip on Hover / Tap
@@ -1061,9 +1227,14 @@
               ${f.address ? `<div><b>Sitio / Block:</b> ${f.address}</div>` : ''}
               <div><b>Commodity:</b> <span style="background:${meta.fill}; padding:2px 7px; border-radius:4px; font-weight:bold; border:1px solid ${meta.stroke};">${meta.label || f.cropType}</span> ${subCrop ? `<span style="font-weight:bold; color:#00695C; font-size:11.5px;">• ${subCrop}</span>` : ''}</div>
               <div><b>Total Land Area:</b> <b style="color:#1B5E20;">${((f.area || 0) / 10000).toFixed(2)} ha</b> (${Math.round(f.area || 0).toLocaleString()} m²)</div>
-              <button onclick="openFarmerModal('${f.id}')" style="margin-top:8px; width:100%; background:#1B5E20; color:#FFF; border:none; padding:7px; border-radius:6px; font-weight:bold; font-size:11.5px; cursor:pointer;">
-                📄 Tan-awa ang Tanan Field Details ➔
-              </button>
+              <div style="display:flex; gap:6px; margin-top:8px;">
+                <button onclick="openFarmerModal('${f.id}')" style="flex:1; background:#1B5E20; color:#FFF; border:none; padding:7px; border-radius:6px; font-weight:bold; font-size:11.5px; cursor:pointer;">
+                  📄 Field Details ➔
+                </button>
+                <button onclick="deleteFarmFromServer('${f.id}', '${(f.farmerName||'').replace(/'/g, "\\'")}')" style="background:#C62828; color:#FFF; border:none; padding:7px 11px; border-radius:6px; font-weight:bold; font-size:11.5px; cursor:pointer;" title="Panason kining farm sa Cloud Master">
+                  🗑️
+                </button>
+              </div>
             </div>
           `);
 
@@ -1102,15 +1273,23 @@
     }
 
     function toggleMunicipalBorder(show) {
+      if (!libonaMunicipalLayer && typeof initBoundaryLayers === 'function') initBoundaryLayers();
       if (!libonaMunicipalLayer) return;
-      if (show) map.addLayer(libonaMunicipalLayer);
-      else map.removeLayer(libonaMunicipalLayer);
+      if (show) {
+        if (!map.hasLayer(libonaMunicipalLayer)) map.addLayer(libonaMunicipalLayer);
+      } else {
+        if (map.hasLayer(libonaMunicipalLayer)) map.removeLayer(libonaMunicipalLayer);
+      }
     }
 
     function toggleBarangayPolygons(show) {
+      if (!allBrgyPolygonsLayer && typeof initBoundaryLayers === 'function') initBoundaryLayers();
       if (!allBrgyPolygonsLayer) return;
-      if (show) map.addLayer(allBrgyPolygonsLayer);
-      else map.removeLayer(allBrgyPolygonsLayer);
+      if (show) {
+        if (!map.hasLayer(allBrgyPolygonsLayer)) map.addLayer(allBrgyPolygonsLayer);
+      } else {
+        if (map.hasLayer(allBrgyPolygonsLayer)) map.removeLayer(allBrgyPolygonsLayer);
+      }
     }
 
     // ── Farmer Field Dossier Modal Functions & Multi-Parcel Search ──
@@ -1585,6 +1764,313 @@
         console.error('Error saving corporate farm:', err);
         alert('Naay problema sa pag-save: ' + err.message);
       }
+    }
+
+    // ==========================================
+    // FARMER NAME FORMATTING (Surname, First Name, MI)
+    // ==========================================
+    function formatToSurnameFirst(fullName) {
+      if (!fullName) return '';
+      const trimmed = fullName.trim();
+      if (trimmed.includes(',')) return trimmed; // Already formatted as "Surname, First"
+      
+      const parts = trimmed.split(/\s+/);
+      if (parts.length <= 1) return trimmed;
+      
+      const suffixes = ['jr', 'jr.', 'sr', 'sr.', 'ii', 'iii', 'iv', 'v'];
+      const lastPartLower = parts[parts.length - 1].toLowerCase();
+      
+      if (parts.length >= 3 && suffixes.includes(lastPartLower)) {
+        const suffix = parts[parts.length - 1];
+        const surname = parts[parts.length - 2];
+        const firstNames = parts.slice(0, parts.length - 2).join(' ');
+        return `${surname} ${suffix}, ${firstNames}`;
+      } else {
+        const surname = parts[parts.length - 1];
+        const firstNames = parts.slice(0, parts.length - 1).join(' ');
+        return `${surname}, ${firstNames}`;
+      }
+    }
+
+    // ==========================================
+    // OVERALL FARMERS DIRECTORY (Unsegregated Master)
+    // ==========================================
+    let overallDirectoryFarms = [];
+
+    function openOverallDirectoryModal() {
+      // Group all farms by farmer name
+      const farmerMap = {};
+      allFarms.forEach(f => {
+        const rawName = (f.farmerName || '').trim();
+        if (!rawName) return;
+        const key = rawName.toLowerCase();
+        const areaHa = (Number(f.area) || 0) / 10000;
+        const brgy = f.baranggay || f.barangay || 'Libona';
+        const crop = f.cropType || 'Others';
+
+        if (!farmerMap[key]) {
+          farmerMap[key] = {
+            rawName: rawName,
+            formattedName: formatToSurnameFirst(rawName),
+            totalHa: 0,
+            barangays: new Set(),
+            crops: new Set(),
+            firstId: f.id,
+            firstCoords: null,
+            parcelsCount: 0
+          };
+        }
+
+        farmerMap[key].totalHa += areaHa;
+        farmerMap[key].barangays.add(brgy);
+        farmerMap[key].crops.add(crop);
+        farmerMap[key].parcelsCount += 1;
+
+        if (!farmerMap[key].firstCoords) {
+          const pts = getFarmPoints(f);
+          if (pts && pts.length > 0) {
+            farmerMap[key].firstCoords = pts[0];
+          } else if (f.centerCoordinates) {
+            const lat = f.centerCoordinates.latitude || f.centerCoordinates.lat;
+            const lng = f.centerCoordinates.longitude || f.centerCoordinates.lng;
+            if (lat && lng) farmerMap[key].firstCoords = [Number(lat), Number(lng)];
+          }
+        }
+      });
+
+      // Convert to array and sort alphabetically by Formatted Name (Surname A-Z)
+      overallDirectoryFarms = Object.values(farmerMap).sort((a, b) => 
+        a.formattedName.localeCompare(b.formattedName, undefined, { sensitivity: 'base' })
+      );
+
+      document.getElementById('overallDirSearch').value = '';
+      renderOverallDirectory(overallDirectoryFarms);
+      document.getElementById('overallDirectoryModal').style.display = 'flex';
+    }
+
+    function closeOverallDirectoryModal() {
+      document.getElementById('overallDirectoryModal').style.display = 'none';
+    }
+
+    function renderOverallDirectory(list) {
+      const tbody = document.getElementById('overallDirectoryTbody');
+      if (!tbody) return;
+
+      const totalFarmers = list.length;
+      const totalHa = list.reduce((acc, f) => acc + f.totalHa, 0).toFixed(2);
+      const sub = document.getElementById('overallDirSub');
+      if (sub) {
+        sub.innerText = `Kinatibuk-ang Rehistradong Mag-uuma: ${totalFarmers} Farmers | Total Area: ${totalHa} ha Across All 14 Barangays (A-Z)`;
+      }
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="padding:20px; text-align:center; color:#888;">Walay nakit-an nga mag-uuma subay sa imong gipangita.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map((item, idx) => {
+        const brgyText = Array.from(item.barangays).join(', ');
+        const cropBadges = Array.from(item.crops).map(c => {
+          const meta = CROP_METADATA[getCropCategory(c)] || { fill: '#ECEFF1', stroke: '#90A4AE', label: c };
+          return `<span style="display:inline-block; font-size:10.5px; padding:2px 6px; border-radius:4px; background:${meta.fill}; border:1px solid ${meta.stroke}; font-weight:600; margin:1px;">${meta.label || c}</span>`;
+        }).join(' ');
+
+        const coordsText = item.firstCoords 
+          ? `${Number(item.firstCoords[0]).toFixed(5)}, ${Number(item.firstCoords[1]).toFixed(5)}`
+          : 'N/A';
+
+        const safeRawName = item.rawName.replace(/'/g, "\\'");
+
+        return `
+          <tr style="border-bottom:1px solid #ECEFF1; background:${idx % 2 === 0 ? '#FFFFFF' : '#FAFAFA'};">
+            <td style="padding:8px 12px; font-weight:bold; color:#1B5E20;">
+              ${item.formattedName}
+              ${item.parcelsCount > 1 ? `<span style="font-size:10px; background:#E8F5E9; color:#2E7D32; padding:1px 5px; border-radius:10px; margin-left:4px;">${item.parcelsCount} parcels</span>` : ''}
+            </td>
+            <td style="padding:8px 12px; color:#455A64;">${brgyText}</td>
+            <td style="padding:8px 12px;">${cropBadges}</td>
+            <td style="padding:8px 12px; font-weight:bold; color:#2E7D32;">${item.totalHa.toFixed(2)} ha</td>
+            <td style="padding:8px 12px; font-family:monospace; font-size:11px; color:#78909C;">${coordsText}</td>
+            <td style="padding:8px 12px; text-align:center;">
+              <div style="display:flex; justify-content:center; gap:4px;">
+                <button onclick="panToFarmerFromDirectory('${item.firstId}')" style="background:#2E7D32; color:#FFF; border:none; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" title="Focus sa Mapa">🗺️ View</button>
+                <button onclick="openFarmerModalFromDirectory('${safeRawName}')" style="background:#1565C0; color:#FFF; border:none; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" title="Tan-awa ang Tibuok Dossier">📄 Details</button>
+                <button onclick="deleteFarmerFromDirectory('${safeRawName}')" style="background:#C62828; color:#FFF; border:none; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;" title="Panason kining mag-uuma">🗑️ Delete</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterOverallDirectory(query) {
+      const q = (query || '').trim().toLowerCase();
+      if (!q) {
+        renderOverallDirectory(overallDirectoryFarms);
+        return;
+      }
+      const filtered = overallDirectoryFarms.filter(f => {
+        const nameMatch = f.formattedName.toLowerCase().includes(q) || f.rawName.toLowerCase().includes(q);
+        const brgyMatch = Array.from(f.barangays).some(b => b.toLowerCase().includes(q));
+        const cropMatch = Array.from(f.crops).some(c => c.toLowerCase().includes(q));
+        return nameMatch || brgyMatch || cropMatch;
+      });
+      renderOverallDirectory(filtered);
+    }
+
+    function panToFarmerFromDirectory(farmId) {
+      closeOverallDirectoryModal();
+      panToSpecificParcel(farmId);
+    }
+
+    function openFarmerModalFromDirectory(rawName) {
+      closeOverallDirectoryModal();
+      openFarmerModal(rawName, true);
+    }
+
+    // ==========================================
+    // DIRECT SUPABASE CLOUD MASTER DELETION
+    // ==========================================
+    const SUPABASE_REST_URL = 'https://cjygsethbhnjaewzdefv.supabase.co/rest/v1/farms';
+    const SUPABASE_KEY = 'sb_publishable_-6L7EsFK9muCMfdC80Tr1w_Mou9nUGs';
+
+    async function deleteFarmFromServer(farmId, farmName) {
+      const label = farmName ? `ni "${farmName}"` : `nga may ID #${farmId}`;
+      if (!confirm(`⚠️ SIGURADO KA NGA GUSTO NIMO IPANAS?\n\nKining luna/parcel ${label} permanenteng mapanas gikan sa Supabase Cloud Master ug sa Server Dashboard.\n\nDili na kini mabalik!`)) {
+        return;
+      }
+
+      try {
+        // 1. Delete from Supabase Cloud Master
+        const res = await fetch(`${SUPABASE_REST_URL}?id=eq.${farmId}`, {
+          method: 'DELETE',
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Prefer': 'return=representation'
+          }
+        });
+
+        // 2. Try delete from local API if active
+        try {
+          await fetch(`/api/farms/${farmId}`, { method: 'DELETE' });
+        } catch (e) {}
+
+        alert(`✅ Malampusong napanas ang farm record gikan sa Cloud Master!`);
+        closeFarmerModal();
+        await loadData();
+      } catch (err) {
+        console.error('Error deleting farm:', err);
+        alert('Naay problema sa pag-panas sa farm record: ' + err.message);
+      }
+    }
+
+    async function deleteCurrentFarmerFromModal() {
+      if (!currentModalParcels || currentModalParcels.length === 0) return;
+      const farmerName = currentModalFarmerName || 'kining mag-uuma';
+      const count = currentModalParcels.length;
+
+      if (!confirm(`⚠️ SIGURADO KA NGA IPANAS SI "${farmerName}"?\n\nKini magpanas sa TANANG ${count} ka luna/parcel ni ${farmerName} gikan sa Supabase Cloud Master.\n\nDili na kini mabalik!`)) {
+        return;
+      }
+
+      try {
+        for (const p of currentModalParcels) {
+          await fetch(`${SUPABASE_REST_URL}?id=eq.${p.id}`, {
+            method: 'DELETE',
+            headers: {
+              'apikey': SUPABASE_KEY,
+              'Authorization': `Bearer ${SUPABASE_KEY}`
+            }
+          });
+          try {
+            await fetch(`/api/farms/${p.id}`, { method: 'DELETE' });
+          } catch (e) {}
+        }
+
+        alert(`✅ Malampusong napanas ang tanang (${count}) records ni "${farmerName}" gikan sa Cloud Master!`);
+        closeFarmerModal();
+        await loadData();
+      } catch (err) {
+        console.error('Error deleting parcels:', err);
+        alert('Naay problema sa pag-panas: ' + err.message);
+      }
+    }
+
+    async function deleteFarmerFromDirectory(rawName) {
+      const parcels = allFarms.filter(f => (f.farmerName || '').trim().toLowerCase() === rawName.trim().toLowerCase());
+      if (parcels.length === 0) return;
+
+      if (!confirm(`⚠️ SIGURADO KA NGA IPANAS SI "${rawName}"?\n\nMapanas ang ${parcels.length} luna niini gikan sa Supabase Cloud Master.\n\nDili na kini mabalik!`)) {
+        return;
+      }
+
+      try {
+        for (const p of parcels) {
+          await fetch(`${SUPABASE_REST_URL}?id=eq.${p.id}`, {
+            method: 'DELETE',
+            headers: {
+              'apikey': SUPABASE_KEY,
+              'Authorization': `Bearer ${SUPABASE_KEY}`
+            }
+          });
+          try {
+            await fetch(`/api/farms/${p.id}`, { method: 'DELETE' });
+          } catch (e) {}
+        }
+
+        alert(`✅ Malampusong napanas ang mga records ni "${rawName}"!`);
+        await loadData();
+        openOverallDirectoryModal(); // Re-render directory
+      } catch (err) {
+        console.error('Error deleting farmer:', err);
+        alert('Naay problema sa pag-panas: ' + err.message);
+      }
+    }
+
+    // ==========================================
+    // EXPORT FUNCTIONS FOR OVERALL DIRECTORY
+    // ==========================================
+    function exportOverallDirCSV() {
+      if (!overallDirectoryFarms || overallDirectoryFarms.length === 0) {
+        alert('Walay data nga ma-export.');
+        return;
+      }
+
+      const headers = ['Farmer Name (Surname First)', 'Raw Name', 'Barangays', 'Commodities', 'Total Parcels', 'Total Area (ha)', 'Approx Coordinates'];
+      const rows = overallDirectoryFarms.map(f => [
+        `"${f.formattedName.replace(/"/g, '""')}"`,
+        `"${f.rawName.replace(/"/g, '""')}"`,
+        `"${Array.from(f.barangays).join('; ')}"`,
+        `"${Array.from(f.crops).join('; ')}"`,
+        f.parcelsCount,
+        f.totalHa.toFixed(2),
+        f.firstCoords ? `"${f.firstCoords[0]}, ${f.firstCoords[1]}"` : '""'
+      ]);
+
+      const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `Libona_Overall_Farmers_Directory_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function exportOverallDirJSON() {
+      if (!overallDirectoryFarms || overallDirectoryFarms.length === 0) {
+        alert('Walay data nga ma-export.');
+        return;
+      }
+      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(overallDirectoryFarms, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute('href', dataStr);
+      downloadAnchor.setAttribute('download', `Libona_Overall_Farmers_Directory_${new Date().toISOString().slice(0, 10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
     }
   </script>
 </body>
